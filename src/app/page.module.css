@@ -1,0 +1,10 @@
+.editor {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--size-md);
+    gap: var(--size-md);
+    height: 100vh;
+    width: 100vw;
+    box-sizing: border-box;
+}

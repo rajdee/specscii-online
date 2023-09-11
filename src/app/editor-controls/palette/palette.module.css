@@ -1,0 +1,5 @@
+.palette {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: var(--size-sm);
+}

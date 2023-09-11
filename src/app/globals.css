@@ -1,0 +1,15 @@
+:root {
+    --size-xs: 4px;
+    --size-sm: 8px;
+    --size-md: 16px;
+    --size-lg: 32px;
+    --size-xl: 64px;
+
+
+    --palette-color-width: var(--size-xl);
+    --palette-color-height: var(--size-xl);
+}
+
+body {
+    margin: 0;
+}

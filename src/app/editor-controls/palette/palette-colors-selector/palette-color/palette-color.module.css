@@ -1,0 +1,5 @@
+.palette-color {
+    width: var(--palette-color-width);
+    height: var(--palette-color-height);
+    aspect-ratio: 1;
+}

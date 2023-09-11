@@ -1,0 +1,13 @@
+.controls {
+    align-self: stretch;
+    display: block;
+    position: relative;
+    min-width: 30%;
+    box-sizing: border-box;
+}
+
+.top {
+    display: grid;
+    grid-template-columns: 1fr 20% 20%;
+    gap: var(--size-md);
+}
