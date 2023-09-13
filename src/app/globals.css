@@ -7,7 +7,7 @@
 
 
     --palette-color-width: var(--size-xl);
-    --palette-color-height: var(--size-xl);
+    --palette-color-height: 6vh;
 }
 
 body {

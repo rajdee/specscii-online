@@ -1,27 +1,25 @@
-import styles from './canvas-chunk.module.css';
-import {symbolsProvider} from '@/app/services/symbols-provider';
 import {useLayoutEffect, useRef} from 'react';
-import {Color} from '@/app/models/color';
+import {symbolsProvider} from '@/app/services/symbols-provider';
+import styles from '@/app/editor-canvas/canvas-chunk/canvas-chunk.module.css';
+import {paletteProvider, ZxColorNames, ZxColorTypes} from '@/app/services/palette-provider';
 
-interface Props {
-    inkColor: Color,
-    paperColor: Color,
-    bright: boolean,
-    flash: boolean,
-    fieldNumber: number,
-    symbolNumber: number
-    changeField: (fieldNumber: number) => void
+interface SymbolSelectorProps {
+    symbolNumber: number,
+    selected: boolean,
+    changeSymbol: (symbolNumber: number) => void
 }
 
-const width = 8;
-const height = 8;
-export const CanvasChunk = ({inkColor, paperColor, bright, flash, fieldNumber, symbolNumber, changeField}: Props) => {
+const width = 16;
+const height = 16;
+export const SymbolSelector = ({symbolNumber, selected, changeSymbol}: SymbolSelectorProps) => {
     const canvasRef = useRef(null);
     useLayoutEffect(() => {
         const symbol = symbolsProvider.getSymbol(symbolNumber);
 
         const canvas = canvasRef.current;
         const context = canvas.getContext('2d');
+        const inkColor = paletteProvider.getColor(ZxColorNames.BLACK, ZxColorTypes.BRIGHT);
+        const paperColor = paletteProvider.getColor(ZxColorNames.WHITE, ZxColorTypes.BRIGHT);
 
         const imageData = context.createImageData(width, height);
         const data = imageData.data;
@@ -39,13 +37,13 @@ export const CanvasChunk = ({inkColor, paperColor, bright, flash, fieldNumber, s
             }
         }
         context.putImageData(imageData, 0, 0);
-    }, [inkColor, paperColor, bright, flash, symbolNumber]);
+    }, [symbolNumber, selected]);
     const click = (event) => {
         event.preventDefault();
         if (!(event.pointerType === 'mouse') || (event.buttons === 1)) {
-            changeField(fieldNumber);
+            changeSymbol(symbolNumber);
         } else if (event.pointerType === 'touch') {
-            changeField(fieldNumber);
+            changeSymbol(symbolNumber);
         }
     };
     return <canvas

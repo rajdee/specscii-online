@@ -1,5 +1,8 @@
 .palette-color {
-    width: var(--palette-color-width);
+    /*width: var(--palette-color-width);*/
     height: var(--palette-color-height);
     aspect-ratio: 1;
+}
+.palette-color-selected {
+    border: 1px solid black;
 }

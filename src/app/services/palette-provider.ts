@@ -1,6 +1,6 @@
-import {Color} from '@/app/services/color';
+import {Color} from '@/app/models/color';
 
-enum ZxColorNames {
+export enum ZxColorNames {
     BLACK = 'black',
     BLUE = 'blue',
     RED = 'red',
@@ -15,36 +15,48 @@ export type ZxColors = {
     [key in ZxColorNames]: Color;
 }
 
-export interface ZxPalette {
-    bright: ZxColors;
-    dark: ZxColors;
+export enum ZxColorTypes {
+    DARK = 'dark',
+    BRIGHT = 'bright'
 }
 
-class PulsarPalette implements ZxPalette {
-    public bright = {
-        [ZxColorNames.BLACK]: {r: 0, g: 0, b: 0, a: 1},
-        [ZxColorNames.BLUE]: {r: 0, g: 0, b: 255, a: 1},
-        [ZxColorNames.RED]: {r: 255, g: 0, b: 0, a: 1},
-        [ZxColorNames.MAGENTA]: {r: 255, g: 0, b: 255, a: 1},
-        [ZxColorNames.GREEN]: {r: 0, g: 255, b: 0, a: 1},
-        [ZxColorNames.CYAN]: {r: 0, g: 255, b: 255, a: 1},
-        [ZxColorNames.YELLOW]: {r: 255, g: 255, b: 0, a: 1},
-        [ZxColorNames.WHITE]: {r: 255, g: 255, b: 255, a: 1},
-    };
-    public dark = {
-        [ZxColorNames.BLACK]: {r: 0, g: 0, b: 0, a: 1},
-        [ZxColorNames.BLUE]: {r: 0, g: 0, b: 205, a: 1},
-        [ZxColorNames.RED]: {r: 205, g: 0, b: 0, a: 1},
-        [ZxColorNames.MAGENTA]: {r: 205, g: 0, b: 205, a: 1},
-        [ZxColorNames.GREEN]: {r: 0, g: 205, b: 0, a: 1},
-        [ZxColorNames.CYAN]: {r: 0, g: 205, b: 205, a: 1},
-        [ZxColorNames.YELLOW]: {r: 205, g: 205, b: 0, a: 1},
-        [ZxColorNames.WHITE]: {r: 205, g: 205, b: 205, a: 1},
-    };
+export type ZxPalette = {
+    [key in ZxColorTypes]: ZxColors
 }
 
-export class PaletteProvider {
-    public static getPalette(): ZxPalette {
-        return new PulsarPalette();
+const pulsarPalette: ZxPalette = {
+    [ZxColorTypes.BRIGHT]: {
+        [ZxColorNames.BLACK]: {r: 0, g: 0, b: 0, a: 255},
+        [ZxColorNames.BLUE]: {r: 0, g: 0, b: 255, a: 255},
+        [ZxColorNames.RED]: {r: 255, g: 0, b: 0, a: 255},
+        [ZxColorNames.MAGENTA]: {r: 255, g: 0, b: 255, a: 255},
+        [ZxColorNames.GREEN]: {r: 0, g: 255, b: 0, a: 255},
+        [ZxColorNames.CYAN]: {r: 0, g: 255, b: 255, a: 255},
+        [ZxColorNames.YELLOW]: {r: 255, g: 255, b: 0, a: 255},
+        [ZxColorNames.WHITE]: {r: 255, g: 255, b: 255, a: 255},
+    },
+    [ZxColorTypes.DARK]: {
+        [ZxColorNames.BLACK]: {r: 0, g: 0, b: 0, a: 255},
+        [ZxColorNames.BLUE]: {r: 0, g: 0, b: 205, a: 255},
+        [ZxColorNames.RED]: {r: 205, g: 0, b: 0, a: 255},
+        [ZxColorNames.MAGENTA]: {r: 205, g: 0, b: 205, a: 255},
+        [ZxColorNames.GREEN]: {r: 0, g: 205, b: 0, a: 255},
+        [ZxColorNames.CYAN]: {r: 0, g: 205, b: 205, a: 255},
+        [ZxColorNames.YELLOW]: {r: 205, g: 205, b: 0, a: 255},
+        [ZxColorNames.WHITE]: {r: 205, g: 205, b: 205, a: 255},
+    },
+};
+
+
+class PaletteProvider {
+    public getPalette(): ZxPalette {
+        return pulsarPalette;
+    }
+
+    public getColor(name: ZxColorNames, type: ZxColorTypes): Color {
+        const palette = this.getPalette();
+        return palette[type][name];
     }
 }
+
+export const paletteProvider = new PaletteProvider();

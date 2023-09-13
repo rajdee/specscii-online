@@ -1,4 +1,4 @@
-import {FontData} from './font-data';
+import {FontData} from '../models/font-data';
 
 type Row = {
     [key in 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7]: boolean;
@@ -8,8 +8,8 @@ type FontSymbol = {
 };
 
 
-class Symbols {
-    private font = [];
+class SymbolsProvider {
+    private font: Array<FontSymbol> = [];
 
     constructor() {
         this.parse();
@@ -34,6 +34,10 @@ class Symbols {
     public getSymbol(symbolNumber: number): FontSymbol | null {
         return this.font[symbolNumber] ?? null;
     }
+
+    public getFont(): Array<FontSymbol> {
+        return this.font;
+    }
 }
 
-export default new Symbols();
+export const symbolsProvider = new SymbolsProvider();
