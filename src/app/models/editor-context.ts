@@ -3,6 +3,8 @@ import {ZxColorNames} from '@/app/services/palette-provider';
 const defaultValue = {
     symbol: 0,
     setSymbol: (number)=>{},
+    grid: true,
+    setGrid: (grid) => {},
     ink: ZxColorNames.BLACK,
     setInk: (ZxColorNames) => {},
     paper: ZxColorNames.WHITE,

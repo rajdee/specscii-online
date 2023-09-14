@@ -1,7 +1,7 @@
 import {useContext} from 'react';
 import {editorContext} from '@/app/models/editor-context';
 import {symbolsProvider} from '@/app/services/symbols-provider';
-import {SymbolSelector} from '@/app/editor-controls/symbols/symbol-selector/symbol-selector';
+import {SymbolSelector} from '@/app/editor-controls/symbols-selector/symbol-selector/symbol-selector';
 import styles from './symbols-selector.module.css';
 
 export default function SymbolsSelector() {

@@ -4,10 +4,6 @@
     --size-md: 16px;
     --size-lg: 32px;
     --size-xl: 64px;
-
-
-    --palette-color-width: var(--size-xl);
-    --palette-color-height: 6vh;
 }
 
 body {

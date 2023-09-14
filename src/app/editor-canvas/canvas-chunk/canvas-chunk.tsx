@@ -1,7 +1,8 @@
 import styles from './canvas-chunk.module.css';
 import {symbolsProvider} from '@/app/services/symbols-provider';
-import {useLayoutEffect, useRef} from 'react';
+import {useContext, useLayoutEffect, useRef} from 'react';
 import {Color} from '@/app/models/color';
+import {editorContext} from '@/app/models/editor-context';
 
 interface Props {
     inkColor: Color,
@@ -16,6 +17,8 @@ interface Props {
 const width = 8;
 const height = 8;
 export const CanvasChunk = ({inkColor, paperColor, bright, flash, fieldNumber, symbolNumber, changeField}: Props) => {
+    const {grid} = useContext(editorContext);
+
     const canvasRef = useRef(null);
     useLayoutEffect(() => {
         const symbol = symbolsProvider.getSymbol(symbolNumber);
@@ -52,7 +55,7 @@ export const CanvasChunk = ({inkColor, paperColor, bright, flash, fieldNumber, s
         onPointerMove={click}
         onClick={click}
         ref={canvasRef}
-        className={styles['canvas-chunk']}
+        className={`${styles['canvas-chunk']} ${grid ? styles['grid'] : ''}`}
         width={width}
         height={height}></canvas>;
 };

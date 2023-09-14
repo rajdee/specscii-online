@@ -1,15 +1,20 @@
 import styles from './editor-controls.module.css';
 import Palette from './palette/palette.tsx';
-import SymbolsSelector from './symbols/symbols-selector.tsx';
+import SymbolsSelector from './symbols-selector/symbols-selector.tsx';
+import {CheckboxSelector} from '@/app/editor-controls/checkbox-selector/checkbox-selector';
+import {useContext} from 'react';
+import {editorContext} from '@/app/models/editor-context';
 
 export default function EditorControls() {
+    const {bright, setBright, flash, setFlash, grid, setGrid} = useContext(editorContext);
 
     return (
         <div className={styles.controls}>
             <div className={styles.top}>
                 <Palette></Palette>
-                <div>B</div>
-                <div>F</div>
+                <CheckboxSelector setting={bright} changeSetting={setBright}>Bright</CheckboxSelector>
+                <CheckboxSelector setting={flash} changeSetting={setFlash}>Flash</CheckboxSelector>
+                <CheckboxSelector setting={grid} changeSetting={setGrid}>Grid</CheckboxSelector>
             </div>
             <SymbolsSelector></SymbolsSelector>
         </div>

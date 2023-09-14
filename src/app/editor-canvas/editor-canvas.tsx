@@ -5,7 +5,7 @@ import {editorContext} from '@/app/models/editor-context';
 import {paletteProvider, ZxColorTypes} from '@/app/services/palette-provider';
 
 export default function EditorCanvas() {
-    const {symbol, ink, paper, fieldsMap, setFieldsMap} = useContext(editorContext);
+    const {symbol, ink, paper, fieldsMap, setFieldsMap, bright} = useContext(editorContext);
     const canvases = [];
 
     const changeField = (fieldNumber: number) => {
@@ -14,6 +14,7 @@ export default function EditorCanvas() {
             ink,
             paper,
             symbol,
+            bright,
         };
         setFieldsMap([...fieldsMap]);
     };
@@ -21,8 +22,8 @@ export default function EditorCanvas() {
     fieldsMap.forEach(
         field => canvases.push(
             <CanvasChunk key={field.x + '-' + field.y}
-                         inkColor={paletteProvider.getColor(field.ink, ZxColorTypes.BRIGHT)}
-                         paperColor={paletteProvider.getColor(field.paper, ZxColorTypes.BRIGHT)}
+                         inkColor={paletteProvider.getColor(field.ink, field.bright? ZxColorTypes.BRIGHT : ZxColorTypes.DARK)}
+                         paperColor={paletteProvider.getColor(field.paper, field.bright? ZxColorTypes.BRIGHT : ZxColorTypes.DARK)}
                          bright={field.bright}
                          flash={field.flash}
                          fieldNumber={fieldNumber++}

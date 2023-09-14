@@ -6,10 +6,11 @@ import {editorContext} from '@/app/models/editor-context';
 
 export default function Palette() {
     const palette: ZxPalette = paletteProvider.getPalette();
-    const {ink, paper, setInk, setPaper} = useContext(editorContext);
+    const {ink, paper, setInk, setPaper, bright} = useContext(editorContext);
+    const colors = bright? palette.bright : palette.dark;
     return <div className={styles.palette}>
-        <PaletteColorsSelector colors={palette.bright} currentColor={ink} changeColor={setInk}></PaletteColorsSelector>
-        <PaletteColorsSelector colors={palette.bright} currentColor={paper}
+        <PaletteColorsSelector colors={colors} currentColor={ink} changeColor={setInk}></PaletteColorsSelector>
+        <PaletteColorsSelector colors={colors} currentColor={paper}
                                changeColor={setPaper}></PaletteColorsSelector>
     </div>;
 }

@@ -9,6 +9,6 @@
 .top {
     height: 50vh;
     display: grid;
-    grid-template-columns: 1fr 20% 20%;
+    grid-template-columns: 20% 20% 20%;
     gap: var(--size-md);
 }
