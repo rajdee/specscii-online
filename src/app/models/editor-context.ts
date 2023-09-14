@@ -1,19 +1,20 @@
 import {createContext} from 'react';
 import {ZxColorNames} from '@/app/services/palette-provider';
+import {CanvasField} from '@/app/models/canvas-field';
 const defaultValue = {
     symbol: 0,
-    setSymbol: (number)=>{},
+    setSymbol: (symbolName: number)=>{},
     grid: true,
-    setGrid: (grid) => {},
+    setGrid: (grid: boolean) => {},
     ink: ZxColorNames.BLACK,
-    setInk: (ZxColorNames) => {},
+    setInk: (name: ZxColorNames) => {},
     paper: ZxColorNames.WHITE,
-    setPaper: (ZxColorNames) => {},
+    setPaper: (name: ZxColorNames) => {},
     bright: true,
-    setBright: (boolean)=>{},
+    setBright: (bright: boolean)=>{},
     flash: false,
-    setFlash: (boolean)=>{},
-    fieldsMap: [],
-    setFieldsMap: ([]) => {},
+    setFlash: (flash: boolean)=>{},
+    fieldsMap: [] as Array<CanvasField>,
+    setFieldsMap: ([]: Array<CanvasField>) => {},
 };
 export const editorContext = createContext(defaultValue);

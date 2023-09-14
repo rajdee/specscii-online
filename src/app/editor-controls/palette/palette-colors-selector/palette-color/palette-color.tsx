@@ -5,7 +5,7 @@ import {ZxColorNames} from '@/app/services/palette-provider';
 type PaletteColorProps = {
     name: ZxColorNames,
     selected: boolean,
-    changeColor: (ZxColorNames) => void;
+    changeColor: (arg0: ZxColorNames) => void;
     color: Color
 }
 export const PaletteColor = ({name, selected, changeColor, color}: PaletteColorProps) => {

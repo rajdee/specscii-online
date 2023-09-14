@@ -1,5 +1,5 @@
 import {useLayoutEffect, useRef} from 'react';
-import {symbolsProvider} from '@/app/services/symbols-provider';
+import {FontSymbol, FontSymbolRow, symbolsProvider} from '@/app/services/symbols-provider';
 import {paletteProvider, ZxColorNames, ZxColorTypes} from '@/app/services/palette-provider';
 import styles from './symbol-selector.module.css';
 
@@ -15,39 +15,46 @@ export const SymbolSelector = ({symbolNumber, selected, changeSymbol}: SymbolSel
     const canvasRef = useRef(null);
     useLayoutEffect(() => {
         const symbol = symbolsProvider.getSymbol(symbolNumber);
+        if (canvasRef && canvasRef.current) {
+            const canvas = canvasRef.current as HTMLCanvasElement;
+            const context = canvas.getContext('2d');
+            if (context) {
+                const inkColor = paletteProvider.getColor(ZxColorNames.BLACK, ZxColorTypes.BRIGHT);
+                const paperColor = paletteProvider.getColor(ZxColorNames.WHITE, ZxColorTypes.BRIGHT);
 
-        const canvas = canvasRef.current;
-        const context = canvas.getContext('2d');
-        const inkColor = paletteProvider.getColor(ZxColorNames.BLACK, ZxColorTypes.BRIGHT);
-        const paperColor = paletteProvider.getColor(ZxColorNames.WHITE, ZxColorTypes.BRIGHT);
-
-        const imageData = context.createImageData(width, height);
-        const data = imageData.data;
-        if (symbol) {
-            for (const row of Object.keys(symbol)) {
-                for (const num of Object.keys(symbol[row])) {
-                    const byte = symbol[row][num];
-                    const color = byte ? inkColor : paperColor;
-                    const i = ((row * width) + +num) * 4;
-                    data[i] = color.r;
-                    data[i + 1] = color.g;
-                    data[i + 2] = color.b;
-                    data[i + 3] = color.a;
+                const imageData = context.createImageData(width, height);
+                const data = imageData?.data;
+                if (symbol && data) {
+                    for (const rowStr of Object.keys(symbol)) {
+                        const row = Number(rowStr) as keyof FontSymbol;
+                        for (const numStr of Object.keys(symbol[row])) {
+                            const num = Number(numStr) as keyof FontSymbolRow;
+                            const byte = symbol[row][num];
+                            const color = byte ? inkColor : paperColor;
+                            const i = ((row * width) + +num) * 4;
+                            data[i] = color.r;
+                            data[i + 1] = color.g;
+                            data[i + 2] = color.b;
+                            data[i + 3] = color.a;
+                        }
+                    }
                 }
+                context.putImageData(imageData, 0, 0);
             }
         }
-        context.putImageData(imageData, 0, 0);
     }, [symbolNumber, selected]);
-    const click = (event) => {
+    const click = (event: React.MouseEvent<HTMLCanvasElement>) => {
         event.preventDefault();
-        if (!(event.pointerType === 'mouse') || (event.buttons === 1)) {
-            changeSymbol(symbolNumber);
-        } else if (event.pointerType === 'touch') {
+        changeSymbol(symbolNumber);
+    };
+    const pointerMove = (event: React.PointerEvent<HTMLCanvasElement>) => {
+        event.preventDefault();
+        if ((event.pointerType === 'mouse' && event.buttons === 1) || event.pointerType === 'touch') {
             changeSymbol(symbolNumber);
         }
     };
     return <canvas
-        onPointerMove={click}
+        onPointerMove={pointerMove}
         onClick={click}
         ref={canvasRef}
         className={styles['symbol-selector']}

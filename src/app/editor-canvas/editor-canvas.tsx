@@ -6,17 +6,19 @@ import {paletteProvider, ZxColorTypes} from '@/app/services/palette-provider';
 
 export default function EditorCanvas() {
     const {symbol, ink, paper, fieldsMap, setFieldsMap, bright} = useContext(editorContext);
-    const canvases = [];
+    const canvases: React.ReactNode[] = [];
 
     const changeField = (fieldNumber: number) => {
-        fieldsMap[fieldNumber] = {
-            ...fieldsMap[fieldNumber],
-            ink,
-            paper,
-            symbol,
-            bright,
-        };
-        setFieldsMap([...fieldsMap]);
+        if (fieldsMap[fieldNumber]){
+            fieldsMap[fieldNumber] = {
+                ...fieldsMap[fieldNumber],
+                ink,
+                paper,
+                symbol,
+                bright,
+            };
+            setFieldsMap([...fieldsMap]);
+        }
     };
     let fieldNumber = 0;
     fieldsMap.forEach(

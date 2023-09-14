@@ -6,7 +6,7 @@ import styles from './symbols-selector.module.css';
 
 export default function SymbolsSelector() {
     const {symbol, setSymbol} = useContext(editorContext);
-    const selectors = [] as SymbolSelector[];
+    const selectors = [] as React.ReactNode[];
     const symbols = symbolsProvider.getFont();
     const changeSymbol = (symbolNumber: number) => {
         setSymbol(symbolNumber);

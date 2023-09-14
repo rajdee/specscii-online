@@ -1,10 +1,10 @@
 import {FontData} from '../models/font-data';
 
-type Row = {
+export type FontSymbolRow = {
     [key in 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7]: boolean;
 };
-type FontSymbol = {
-    [key in 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7]: Row;
+export type FontSymbol = {
+    [key in 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7]: FontSymbolRow;
 };
 
 
@@ -17,17 +17,17 @@ class SymbolsProvider {
 
     private parse(): void {
         for (let i = 0; i < FontData.length / 8; i++) {
-            const symbol: Partial<FontSymbol> = {};
-            for (let j = 0; j < 8; j++) {
+            const symbol = {} as FontSymbol;
+            for (let j = 0 as keyof FontSymbol; j < 8; j++) {
                 const binaryString = FontData[i * 8 + j].toString(2).padStart(8, '0');
-                const row: Partial<Row> = {};
+                const row = {} as FontSymbolRow;
 
-                for (let x = 0; x < 8; x++) {
+                for (let x = 0 as keyof FontSymbolRow; x < 8; x++) {
                     row[x] = binaryString[x] === '1';
                 }
                 symbol[j] = row;
             }
-            this.font.push(symbol);
+            this.font.push(symbol as FontSymbol);
         }
     }
 

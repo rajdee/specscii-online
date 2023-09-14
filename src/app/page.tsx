@@ -7,6 +7,7 @@ import {Metadata} from 'next';
 import {editorContext} from '@/app/models/editor-context';
 import {useState} from 'react';
 import {ZxColorNames} from '@/app/services/palette-provider';
+import {CanvasField} from '@/app/models/canvas-field';
 
 export default function Home() {
     const [symbol, setSymbol] = useState(32);
@@ -24,7 +25,7 @@ export default function Home() {
         flash: false,
         x: index % 32,
         y: Math.floor(index / 32),
-    })));
+    } as CanvasField)));
     return (
         <main className={styles.editor}>
             <editorContext.Provider value={{symbol, setSymbol, ink, setInk, paper, setPaper, fieldsMap, setFieldsMap, bright, setBright, flash, setFlash, grid, setGrid}}>
