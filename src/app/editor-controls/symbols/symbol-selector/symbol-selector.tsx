@@ -1,7 +1,7 @@
 import {useLayoutEffect, useRef} from 'react';
 import {symbolsProvider} from '@/app/services/symbols-provider';
-import styles from '@/app/editor-canvas/canvas-chunk/canvas-chunk.module.css';
 import {paletteProvider, ZxColorNames, ZxColorTypes} from '@/app/services/palette-provider';
+import styles from './symbol-selector.module.css';
 
 interface SymbolSelectorProps {
     symbolNumber: number,
@@ -50,7 +50,7 @@ export const SymbolSelector = ({symbolNumber, selected, changeSymbol}: SymbolSel
         onPointerMove={click}
         onClick={click}
         ref={canvasRef}
-        className={styles['canvas-chunk']}
+        className={styles['symbol-selector']}
         width={width}
         height={height}></canvas>;
 };
