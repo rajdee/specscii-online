@@ -1,4 +1,4 @@
-import {ZxColorNames} from '@/app/services/palette-provider';
+import {ZxColorNames} from '@/app/models/zx-color-names';
 
 export interface CanvasField {
     x: number,

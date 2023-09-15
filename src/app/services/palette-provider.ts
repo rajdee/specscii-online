@@ -1,28 +1,7 @@
 import {Color} from '@/app/models/color';
-
-export enum ZxColorNames {
-    BLACK = 'black',
-    BLUE = 'blue',
-    RED = 'red',
-    MAGENTA = 'magenta',
-    GREEN = 'green',
-    CYAN = 'cyan',
-    YELLOW = 'yellow',
-    WHITE = 'white',
-}
-
-export type ZxColors = {
-    [key in ZxColorNames]: Color;
-}
-
-export enum ZxColorTypes {
-    DARK = 'dark',
-    BRIGHT = 'bright'
-}
-
-export type ZxPalette = {
-    [key in ZxColorTypes]: ZxColors
-}
+import {ZxColorNames} from '@/app/models/zx-color-names';
+import {ZxColorTypes} from '@/app/models/zx-color-types';
+import {ZxPalette} from '@/app/models/zx-palette';
 
 const pulsarPalette: ZxPalette = {
     [ZxColorTypes.BRIGHT]: {

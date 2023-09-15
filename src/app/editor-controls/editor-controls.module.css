@@ -9,6 +9,7 @@
 .top {
     height: 50vh;
     display: grid;
-    grid-template-columns: 20% 20% 20% 20%;
+    grid-template-columns: 20% repeat(3, 1fr); /* Палитра, а затем три чекбокса */
+    grid-template-rows: 1fr auto; /* Разделение пространства на две строки: для чекбоксов и для кнопки сохранения */
     gap: var(--size-md);
 }

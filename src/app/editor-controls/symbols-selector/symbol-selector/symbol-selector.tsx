@@ -1,7 +1,9 @@
 import {useLayoutEffect, useRef} from 'react';
 import {FontSymbol, FontSymbolRow, symbolsProvider} from '@/app/services/symbols-provider';
-import {paletteProvider, ZxColorNames, ZxColorTypes} from '@/app/services/palette-provider';
+import {paletteProvider} from '@/app/services/palette-provider';
 import styles from './symbol-selector.module.css';
+import {ZxColorNames} from '@/app/models/zx-color-names';
+import {ZxColorTypes} from '@/app/models/zx-color-types';
 
 interface SymbolSelectorProps {
     symbolNumber: number,

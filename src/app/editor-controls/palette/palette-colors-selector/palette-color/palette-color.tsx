@@ -1,6 +1,6 @@
 import styles from './palette-color.module.css';
 import {Color} from '@/app/models/color';
-import {ZxColorNames} from '@/app/services/palette-provider';
+import {ZxColorNames} from '@/app/models/zx-color-names';
 
 type PaletteColorProps = {
     name: ZxColorNames,

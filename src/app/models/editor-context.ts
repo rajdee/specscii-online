@@ -1,6 +1,6 @@
 import {createContext} from 'react';
-import {ZxColorNames} from '@/app/services/palette-provider';
 import {CanvasField} from '@/app/models/canvas-field';
+import {ZxColorNames} from '@/app/models/zx-color-names';
 const defaultValue = {
     symbol: 0,
     setSymbol: (symbolName: number)=>{},

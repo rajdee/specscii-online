@@ -2,7 +2,8 @@ import styles from './editor-canvas.module.css';
 import {CanvasChunk} from '@/app/editor-canvas/canvas-chunk/canvas-chunk';
 import {useContext} from 'react';
 import {editorContext} from '@/app/models/editor-context';
-import {paletteProvider, ZxColorTypes} from '@/app/services/palette-provider';
+import {paletteProvider} from '@/app/services/palette-provider';
+import {ZxColorTypes} from '@/app/models/zx-color-types';
 
 export default function EditorCanvas() {
     const {symbol, ink, paper, fieldsMap, setFieldsMap, bright} = useContext(editorContext);

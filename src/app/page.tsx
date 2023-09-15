@@ -6,8 +6,8 @@ import EditorControls from '@/app/editor-controls/editor-controls';
 import {Metadata} from 'next';
 import {editorContext} from '@/app/models/editor-context';
 import {useState} from 'react';
-import {ZxColorNames} from '@/app/services/palette-provider';
 import {CanvasField} from '@/app/models/canvas-field';
+import {ZxColorNames} from '@/app/models/zx-color-names';
 
 export default function Home() {
     const [symbol, setSymbol] = useState(32);

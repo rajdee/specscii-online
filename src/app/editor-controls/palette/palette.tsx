@@ -1,8 +1,9 @@
-import {paletteProvider, ZxPalette} from '../../services/palette-provider';
+import {paletteProvider} from '../../services/palette-provider';
 import PaletteColorsSelector from './palette-colors-selector/palette-colors-selector';
 import styles from './palette.module.css';
 import {useContext} from 'react';
 import {editorContext} from '@/app/models/editor-context';
+import {ZxPalette} from '@/app/models/zx-palette';
 
 export default function Palette() {
     const palette: ZxPalette = paletteProvider.getPalette();

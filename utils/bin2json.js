@@ -20,7 +20,7 @@ const convertToJSON = (binaryData) => {
     return jsonArray;
 };
 
-const filePath = 'font.bin';  // Замените на путь к вашему бинарному файлу
+const filePath = 'source.bin';  
 
 (async () => {
     try {
