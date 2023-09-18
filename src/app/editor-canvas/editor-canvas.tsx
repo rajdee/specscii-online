@@ -2,21 +2,25 @@ import styles from './editor-canvas.module.css';
 import {CanvasChunk} from '@/app/editor-canvas/canvas-chunk/canvas-chunk';
 import {useContext} from 'react';
 import {editorContext} from '@/app/models/editor-context';
-import {paletteProvider} from '@/app/services/palette-provider';
-import {ZxColorTypes} from '@/app/models/zx-color-types';
 
 export default function EditorCanvas() {
-    const {symbol, ink, paper, fieldsMap, setFieldsMap, bright} = useContext(editorContext);
+    const {symbol, ink, paper, fieldsMap, setFieldsMap, bright, flash} = useContext(editorContext);
     const canvases: React.ReactNode[] = [];
 
     const changeField = (fieldNumber: number) => {
-        if (fieldsMap[fieldNumber]){
+        if (fieldsMap[fieldNumber]) {
+            const newInk = ink ? ink : fieldsMap[fieldNumber].ink;
+            const newPaper = paper ? paper : fieldsMap[fieldNumber].paper;
+            const newSymbol = symbol ? symbol : fieldsMap[fieldNumber].symbol;
+            const newBright = bright !== null ? bright : fieldsMap[fieldNumber].bright;
+            const newFlash = flash !== null ? flash : fieldsMap[fieldNumber].flash;
+            console.log(newBright, bright);
             fieldsMap[fieldNumber] = {
                 ...fieldsMap[fieldNumber],
-                ink,
-                paper,
-                symbol,
-                bright,
+                ink: newInk,
+                paper: newPaper,
+                symbol: newSymbol,
+                bright: newBright,
             };
             setFieldsMap([...fieldsMap]);
         }
@@ -25,8 +29,8 @@ export default function EditorCanvas() {
     fieldsMap.forEach(
         field => canvases.push(
             <CanvasChunk key={field.x + '-' + field.y}
-                         inkColor={paletteProvider.getColor(field.ink, field.bright? ZxColorTypes.BRIGHT : ZxColorTypes.DARK)}
-                         paperColor={paletteProvider.getColor(field.paper, field.bright? ZxColorTypes.BRIGHT : ZxColorTypes.DARK)}
+                         ink={field.ink}
+                         paper={field.paper}
                          bright={field.bright}
                          flash={field.flash}
                          fieldNumber={fieldNumber++}

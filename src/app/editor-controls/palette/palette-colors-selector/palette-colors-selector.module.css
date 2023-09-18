@@ -1,4 +1,3 @@
 .palette-colors-selector {
-    flex-grow: 1;
-    flex-shrink: 0;
+    aspect-ratio: 1 / 9;
 }

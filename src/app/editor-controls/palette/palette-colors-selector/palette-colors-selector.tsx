@@ -5,8 +5,8 @@ import {ZxColors} from '@/app/models/zx-colors';
 
 type PaletteColorsSelectorProps = {
     colors: ZxColors,
-    currentColor: ZxColorNames,
-    changeColor: (arg0: ZxColorNames) => void
+    currentColor: ZxColorNames | null,
+    changeColor: (arg0: ZxColorNames | null) => void
 }
 
 export default function PaletteColorsSelector({colors, currentColor, changeColor}: PaletteColorsSelectorProps) {
@@ -16,6 +16,8 @@ export default function PaletteColorsSelector({colors, currentColor, changeColor
             selectors.push(<PaletteColor selected={name === currentColor} changeColor={changeColor}
                                          key={name + colors[name]} name={name} color={colors[name]}></PaletteColor>);
         }
+        selectors.push(<PaletteColor selected={null === currentColor} changeColor={changeColor}
+                                     key={'transparent'} name={null} color={colors[ZxColorNames.WHITE]}></PaletteColor>);
     }
     return <div className={styles['palette-colors-selector']}>{selectors}</div>;
 }

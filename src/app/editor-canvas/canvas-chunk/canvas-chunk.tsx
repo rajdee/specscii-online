@@ -3,10 +3,13 @@ import {FontSymbol, FontSymbolRow, symbolsProvider} from '@/app/services/symbols
 import {useContext, useLayoutEffect, useRef} from 'react';
 import {Color} from '@/app/models/color';
 import {editorContext} from '@/app/models/editor-context';
+import {ZxColorNames} from '@/app/models/zx-color-names';
+import {paletteProvider} from '@/app/services/palette-provider';
+import {ZxColorTypes} from '@/app/models/zx-color-types';
 
 interface Props {
-    inkColor: Color,
-    paperColor: Color,
+    ink: ZxColorNames,
+    paper: ZxColorNames,
     bright: boolean,
     flash: boolean,
     fieldNumber: number,
@@ -16,8 +19,10 @@ interface Props {
 
 const width = 8;
 const height = 8;
-export const CanvasChunk = ({inkColor, paperColor, bright, flash, fieldNumber, symbolNumber, changeField}: Props) => {
+export const CanvasChunk = ({ink, paper, bright, flash, fieldNumber, symbolNumber, changeField}: Props) => {
     const {grid} = useContext(editorContext);
+    const inkColor = paletteProvider.getColor(ink, bright? ZxColorTypes.BRIGHT : ZxColorTypes.DARK);
+    const paperColor = paletteProvider.getColor(paper, bright? ZxColorTypes.BRIGHT : ZxColorTypes.DARK)
 
     const canvasRef = useRef(null);
     useLayoutEffect(() => {
@@ -46,7 +51,7 @@ export const CanvasChunk = ({inkColor, paperColor, bright, flash, fieldNumber, s
                 context.putImageData(imageData, 0, 0);
             }
         }
-    }, [inkColor, paperColor, bright, flash, symbolNumber]);
+    }, [ink, paper, bright, flash, symbolNumber]);
 
     const click = (event: React.MouseEvent<HTMLCanvasElement>) => {
         event.preventDefault();
