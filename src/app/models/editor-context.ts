@@ -3,19 +3,19 @@ import {CanvasField} from '@/app/models/canvas-field';
 import {ZxColorNames} from '@/app/models/zx-color-names';
 export type EditorContextValue = {
     symbol: number | null,
-    setSymbol: CallableFunction,
+    setSymbol: (symbol: number | null) => void,
     grid: boolean,
-    setGrid: CallableFunction,
-    ink: ZxColorNames.BLACK,
-    setInk: CallableFunction,
-    paper: ZxColorNames.WHITE,
-    setPaper: CallableFunction,
+    setGrid: (grid: boolean) => void,
+    ink: ZxColorNames | null,
+    setInk: (ink: ZxColorNames | null) => void,
+    paper: ZxColorNames | null,
+    setPaper: (paper: ZxColorNames | null) => void,
     bright:  boolean | null,
-    setBright: CallableFunction,
+    setBright: (bright:  boolean | null) => void,
     flash:  boolean | null,
-    setFlash: CallableFunction,
+    setFlash: (flash:  boolean | null) => void,
     fieldsMap:  Array<CanvasField>,
-    setFieldsMap: CallableFunction,
+    setFieldsMap: (fieldsMap:  Array<CanvasField>) => void,
 }
 const defaultValue:EditorContextValue = {
     symbol: 0,

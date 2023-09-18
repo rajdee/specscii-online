@@ -14,6 +14,7 @@ interface SymbolSelectorProps {
 const width = 16;
 const height = 16;
 export const SymbolSelector = ({symbolNumber, selected, changeSymbol}: SymbolSelectorProps) => {
+    const className = selected?`${styles['symbol-selector']} ${styles['symbol-selector-selected']}`:`${styles['symbol-selector']} `;
     const canvasRef = useRef(null);
     useLayoutEffect(() => {
         const symbol = symbolsProvider.getSymbol(symbolNumber);
@@ -59,7 +60,7 @@ export const SymbolSelector = ({symbolNumber, selected, changeSymbol}: SymbolSel
         onPointerMove={pointerMove}
         onClick={click}
         ref={canvasRef}
-        className={styles['symbol-selector']}
+        className={className}
         width={width}
         height={height}></canvas>;
 };

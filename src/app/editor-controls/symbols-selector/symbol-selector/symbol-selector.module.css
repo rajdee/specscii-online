@@ -3,3 +3,7 @@
     aspect-ratio: 1;
     image-rendering: pixelated;
 }
+
+.symbol-selector-selected {
+    outline: 1px solid black;
+}

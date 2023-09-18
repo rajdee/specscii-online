@@ -1,4 +1,6 @@
 import {ReactNode} from 'react';
+import styles from './nullable-boolean-selector.module.css';
+
 interface NullableBooleanSelectorProps {
     setting: boolean | null,
     changeSetting: (setting: boolean | null) => void,
@@ -26,7 +28,7 @@ export const NullableBooleanSelector = ({setting, changeSetting, children}: Null
         <div>
             {children}
             <div>
-                <label>
+                <label className={styles.label}>
                     <input
                         type="radio"
                         value="on"
@@ -35,7 +37,7 @@ export const NullableBooleanSelector = ({setting, changeSetting, children}: Null
                     />
                     On
                 </label>
-                <label>
+                <label className={styles.label}>
                     <input
                         type="radio"
                         value="off"
@@ -44,7 +46,7 @@ export const NullableBooleanSelector = ({setting, changeSetting, children}: Null
                     />
                     Off
                 </label>
-                <label>
+                <label className={styles.label}>
                     <input
                         type="radio"
                         value="ignore"

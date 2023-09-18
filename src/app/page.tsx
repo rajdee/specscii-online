@@ -17,7 +17,6 @@ export default function Home() {
     const [bright, setBright] = useState<boolean | null>(true);
     const [flash, setFlash] = useState<boolean | null>(false);
     const [fieldsMap, setFieldsMap] = useState(Array(768).fill(null).map((_, index) => ({
-        grid: true,
         ink: ZxColorNames.BLACK,
         paper: ZxColorNames.WHITE,
         symbol: 0,
