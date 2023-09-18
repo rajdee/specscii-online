@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     output: 'export',
-    basePath: '/specscii',
-    assetPrefix: '/specscii/',
+    basePath: process.env.BASE_PATH,
+    assetPrefix: process.env.ASSET_PREFIX,
 }
 
 module.exports = nextConfig

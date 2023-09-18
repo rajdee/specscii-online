@@ -1,29 +1,35 @@
-import styles from './save-file.module.css';
+import styles from './file-controls.module.css';
 import {imageDataTransformer} from '@/app/services/image-data-transformer';
-import {useContext} from 'react';
+import {useContext, useRef} from 'react';
 import {editorContext} from '@/app/models/editor-context';
 import {tokensToBasic} from '@/app/services/tokens-to-basic';
+import {jsonExporter} from '@/app/services/json-export';
+import {LoadFile} from '@/app/editor-controls/file-controls/load-file/load-file';
 
-export const SaveFile = () => {
+export const FileControls = () => {
     const {fieldsMap} = useContext(editorContext);
     const saveTokens = () => {
         const tokens = imageDataTransformer.convertToTokens(fieldsMap);
-        downloadFile(tokens, 'tokens.C');
+        downloadBinary(tokens, 'image.C');
+    };
+    const saveJson = () => {
+        const json = jsonExporter.getJsonFromData(fieldsMap, 0);
+        downloadFile(JSON.stringify(json), 'image.json');
     };
     const saveBasic = () => {
         const tokens = imageDataTransformer.convertToTokens(fieldsMap);
-        console.log(tokens);
         const basic = tokensToBasic.convertToBasic(tokens);
-        console.log(basic);
-        downloadFile(basic, 'image.B');
+        downloadBinary(basic, 'image.B');
     };
-    const downloadFile = (numbers: number[], filename: string) => {
+    const downloadBinary = (numbers: number[], filename: string) => {
         const bytes = new Uint8Array(numbers);
         let binaryString = '';
         bytes.forEach((byte) => {
             binaryString += String.fromCharCode(byte);
         });
-
+        downloadFile(binaryString, filename);
+    };
+    const downloadFile = (binaryString: string, filename: string) => {
         const base64Data = btoa(binaryString);
 
         const element = document.createElement('a');
@@ -38,8 +44,10 @@ export const SaveFile = () => {
         document.body.removeChild(element);
     };
 
-
-    return <div><input className={styles['save-file']} type="button" onClick={saveTokens} value="Save tokens"/>
-        <input className={styles['save-file']} type="button" onClick={saveBasic} value="Save basic"/>
+    return <div className={styles['file-controls']}>
+        <input className={styles['save-file-button']} type="button" onClick={saveJson} value="Save json"/>
+        <input className={styles['save-file-button']} type="button" onClick={saveTokens} value="Save tokens"/>
+        <input className={styles['save-file-button']} type="button" onClick={saveBasic} value="Save basic"/>
+        <LoadFile />
     </div>;
 };
