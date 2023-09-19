@@ -6,6 +6,7 @@ import {editorContext} from '@/app/models/editor-context';
 import {ZxColorNames} from '@/app/models/zx-color-names';
 import {paletteProvider} from '@/app/services/palette-provider';
 import {ZxColorTypes} from '@/app/models/zx-color-types';
+import {flashSwapContext} from '@/app/models/flash-swap-context';
 
 interface Props {
     ink: ZxColorNames,
@@ -20,9 +21,10 @@ interface Props {
 const width = 8;
 const height = 8;
 export const CanvasChunk = ({ink, paper, bright, flash, fieldNumber, symbolNumber, changeField}: Props) => {
+    const {flashSwap} = useContext(flashSwapContext);
     const {grid} = useContext(editorContext);
-    const inkColor = paletteProvider.getColor(ink, bright? ZxColorTypes.BRIGHT : ZxColorTypes.DARK);
-    const paperColor = paletteProvider.getColor(paper, bright? ZxColorTypes.BRIGHT : ZxColorTypes.DARK)
+    const inkColor = paletteProvider.getColor(ink, bright ? ZxColorTypes.BRIGHT : ZxColorTypes.DARK);
+    const paperColor = paletteProvider.getColor(paper, bright ? ZxColorTypes.BRIGHT : ZxColorTypes.DARK);
 
     const canvasRef = useRef(null);
     useLayoutEffect(() => {
@@ -39,7 +41,7 @@ export const CanvasChunk = ({ink, paper, bright, flash, fieldNumber, symbolNumbe
                         for (const numStr of Object.keys(symbol[row])) {
                             const num = Number(numStr) as keyof FontSymbolRow;
                             const byte = symbol[row][num];
-                            const color = byte ? inkColor : paperColor;
+                            const color = (!flash || !flashSwap) ? (byte ? inkColor : paperColor) : (byte ? paperColor : inkColor);
                             const i = ((row * width) + +num) * 4;
                             data[i] = color.r;
                             data[i + 1] = color.g;
@@ -51,7 +53,7 @@ export const CanvasChunk = ({ink, paper, bright, flash, fieldNumber, symbolNumbe
                 context.putImageData(imageData, 0, 0);
             }
         }
-    }, [inkColor, paperColor, bright, flash, symbolNumber]);
+    }, [inkColor, paperColor, bright, flash, symbolNumber, flashSwap && flash]);
 
     const click = (event: React.MouseEvent<HTMLCanvasElement>) => {
         event.preventDefault();

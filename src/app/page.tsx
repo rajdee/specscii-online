@@ -37,18 +37,6 @@ export default function Home() {
             }
         }
     }, []);
-    // useEffect(() => {
-    //         const interval = setInterval(
-    //             () => {
-    //
-    //
-    //             }, 320,
-    //         );
-    //         return () => {
-    //             clearInterval(interval);
-    //         };
-    //     },
-    // );
 
     return (
         <main className={styles.editor}>

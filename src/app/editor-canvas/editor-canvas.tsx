@@ -1,12 +1,13 @@
 import styles from './editor-canvas.module.css';
 import {CanvasChunk} from '@/app/editor-canvas/canvas-chunk/canvas-chunk';
-import {useContext} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import {editorContext} from '@/app/models/editor-context';
+import {flashSwapContext} from '@/app/models/flash-swap-context';
 
 export default function EditorCanvas() {
     const {symbolsMode, symbol, ink, paper, fieldsMap, setFieldsMap, bright, flash} = useContext(editorContext);
     const canvases: React.ReactNode[] = [];
-
+    const [flashSwap, setFlashSwap] = useState<boolean>(false);
     const changeField = (fieldNumber: number) => {
         if (fieldsMap[fieldNumber]) {
             const newInk = ink ? ink : fieldsMap[fieldNumber].ink;
@@ -44,7 +45,21 @@ export default function EditorCanvas() {
         ),
     );
 
+    useEffect(() => {
+            const interval = setInterval(
+                () => {
+                    setFlashSwap(flashSwap => !flashSwap);
+                }, 320,
+            );
+            return () => {
+                clearInterval(interval);
+            };
+        }, [],
+    );
+
     return (
-        <div className={styles['editor-canvas']}>{canvases}</div>
+        <flashSwapContext.Provider value={{flashSwap}}>
+            <div className={styles['editor-canvas']}>{canvases}</div>
+        </flashSwapContext.Provider>
     );
 }
