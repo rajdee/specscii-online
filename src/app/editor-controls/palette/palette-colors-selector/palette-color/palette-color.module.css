@@ -2,6 +2,7 @@
     aspect-ratio: 1;
     box-sizing: border-box;
 }
+
 .palette-color-selected {
     outline: 1px solid black;
 }

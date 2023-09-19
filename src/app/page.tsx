@@ -5,12 +5,15 @@ import EditorCanvas from '@/app/editor-canvas/editor-canvas';
 import EditorControls from '@/app/editor-controls/editor-controls';
 import {Metadata} from 'next';
 import {editorContext} from '@/app/models/editor-context';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {CanvasField} from '@/app/models/canvas-field';
 import {ZxColorNames} from '@/app/models/zx-color-names';
+import {SymbolsMode} from '@/app/models/symbols-mode';
 
 export default function Home() {
-    const [symbol, setSymbol] = useState<number | null>(32);
+
+    const [symbolsMode, setSymbolsMode] = useState<SymbolsMode>('symbols');
+    const [symbol, setSymbol] = useState<number>(32);
     const [grid, setGrid] = useState<boolean>(true);
     const [ink, setInk] = useState<ZxColorNames | null>(ZxColorNames.BLACK);
     const [paper, setPaper] = useState<ZxColorNames | null>(ZxColorNames.WHITE);
@@ -25,9 +28,40 @@ export default function Home() {
         x: index % 32,
         y: Math.floor(index / 32),
     } as CanvasField)));
+
+    useEffect(() => {
+        if (typeof window !== 'undefined' && window.localStorage) {
+            const fieldsMap = localStorage.getItem('fieldsMap');
+            if (fieldsMap) {
+                setFieldsMap(JSON.parse(fieldsMap) as CanvasField[]);
+            }
+        }
+    }, []);
+    // useEffect(() => {
+    //         const interval = setInterval(
+    //             () => {
+    //
+    //
+    //             }, 320,
+    //         );
+    //         return () => {
+    //             clearInterval(interval);
+    //         };
+    //     },
+    // );
+
     return (
         <main className={styles.editor}>
-            <editorContext.Provider value={{symbol, setSymbol, ink, setInk, paper, setPaper, fieldsMap, setFieldsMap, bright, setBright, flash, setFlash, grid, setGrid}}>
+            <editorContext.Provider value={{
+                symbolsMode, setSymbolsMode,
+                symbol, setSymbol,
+                ink, setInk,
+                paper, setPaper,
+                fieldsMap, setFieldsMap,
+                bright, setBright,
+                flash, setFlash,
+                grid, setGrid,
+            }}>
                 <EditorCanvas/>
                 <EditorControls/>
             </editorContext.Provider>

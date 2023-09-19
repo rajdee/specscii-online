@@ -51,7 +51,7 @@ export const CanvasChunk = ({ink, paper, bright, flash, fieldNumber, symbolNumbe
                 context.putImageData(imageData, 0, 0);
             }
         }
-    }, [ink, paper, bright, flash, symbolNumber]);
+    }, [inkColor, paperColor, bright, flash, symbolNumber]);
 
     const click = (event: React.MouseEvent<HTMLCanvasElement>) => {
         event.preventDefault();

@@ -1,0 +1,1 @@
+export type SymbolsMode = 'blocks' | 'ignore' | 'symbols';
