@@ -1,7 +1,6 @@
 import styles from './canvas-chunk.module.css';
 import {FontSymbol, FontSymbolRow, symbolsProvider} from '@/app/services/symbols-provider';
 import {useContext, useLayoutEffect, useRef} from 'react';
-import {Color} from '@/app/models/color';
 import {editorContext} from '@/app/models/editor-context';
 import {ZxColorNames} from '@/app/models/zx-color-names';
 import {paletteProvider} from '@/app/services/palette-provider';

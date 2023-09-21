@@ -19,8 +19,8 @@ export default function SymbolsSelector() {
                                            changeSymbol={changeSymbol}></SymbolSelector>);
         }
     }
-    return <div>
+    return <div className={styles['symbols-selector']}>
         <SymbolsModeSelector/>
-        <div className={styles['symbols-selector']}>{selectors}</div>
+        <div className={styles['symbols-selector-grid']}>{selectors}</div>
     </div>;
 }

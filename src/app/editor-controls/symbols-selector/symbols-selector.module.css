@@ -1,6 +1,12 @@
 .symbols-selector {
-    height: 50vh;
+    height: 50%;
     position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.symbols-selector-grid {
+    flex-grow: 1;
     display: grid;
     grid-template-columns: repeat(8, 1fr);
     grid-template-rows: repeat(16, 1fr);

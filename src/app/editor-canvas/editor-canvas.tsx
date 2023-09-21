@@ -59,7 +59,9 @@ export default function EditorCanvas() {
 
     return (
         <flashSwapContext.Provider value={{flashSwap}}>
-            <div className={styles['editor-canvas']}>{canvases}</div>
+            <div className={styles['editor-canvas']}>
+            <div className={styles['editor-canvas-elements']}>{canvases}</div>
+            </div>
         </flashSwapContext.Provider>
     );
 }

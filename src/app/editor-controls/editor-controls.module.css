@@ -2,12 +2,11 @@
     align-self: stretch;
     display: block;
     position: relative;
-    min-width: 30%;
     box-sizing: border-box;
 }
 
 .top {
-    height: 50vh;
+    height: 50%;
     display: flex;
     gap: var(--size-md);
 }
