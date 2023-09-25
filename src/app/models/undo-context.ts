@@ -6,15 +6,15 @@ export type UndoHistory = Array<Array<CanvasField>>;
 export type UndoContextValue = {
     undoHistory: UndoHistory,
     setUndoHistory: (undoHistory: UndoHistory) => void,
-    undoStepNumber: number | null,
-    setUndoStepNumber: (undoStepNumber: number | null) => void,
+    undoStepNumber: number,
+    setUndoStepNumber: (undoStepNumber: number) => void,
 }
 const defaultValue: UndoContextValue = {
     undoHistory: [],
     setUndoHistory: (undoHistory: UndoHistory) => {
     },
-    undoStepNumber: null,
-    setUndoStepNumber: (undoStepNumber: number | null) => {
+    undoStepNumber: 0,
+    setUndoStepNumber: (undoStepNumber: number) => {
     },
 };
 export const undoHistoryContext = createContext<UndoContextValue>(defaultValue);

@@ -4,13 +4,14 @@ import {useContext, useEffect, useState} from 'react';
 import {editorContext} from '@/app/models/editor-context';
 import {flashSwapContext} from '@/app/models/flash-swap-context';
 import {undoHistoryContext} from '@/app/models/undo-context';
+import {CanvasField} from '@/app/models/canvas-field';
 
 export default function EditorCanvas() {
     const {fieldsMap} = useContext(editorContext);
     const {undoHistory, setUndoHistory, undoStepNumber, setUndoStepNumber} = useContext(undoHistoryContext);
     const canvases: React.ReactNode[] = [];
     const [flashSwap, setFlashSwap] = useState<boolean>(false);
-    let beforeFieldsMap;
+    const [beforeFieldsMap, setBeforeFieldsMap] = useState<Array<CanvasField>>([]);
     let fieldNumber = 0;
     fieldsMap.forEach(
         field => canvases.push(
@@ -37,17 +38,21 @@ export default function EditorCanvas() {
         }, [],
     );
     const startCapturing = () => {
-        beforeFieldsMap = [...fieldsMap];
+        setBeforeFieldsMap([...fieldsMap]);
     };
     const endCapturing = () => {
-        const newStep = undoStepNumber !== null ? undoStepNumber + 1 : 0;
-
-        const newUndoHistory = undoHistory.length ? undoHistory.slice(0, newStep) : [];
-        console.log(undoStepNumber, newStep, undoHistory.length, newUndoHistory);
-
+        const maxSteps = 100;
+        const newUndoHistory = undoStepNumber === undoHistory.length ? undoHistory : undoHistory.slice(0, undoStepNumber);
         newUndoHistory.push(beforeFieldsMap);
+
+        if (newUndoHistory.length > maxSteps) {
+            newUndoHistory.shift();
+            setUndoStepNumber(maxSteps);
+        } else {
+            setUndoStepNumber(undoStepNumber + 1);
+        }
+
         setUndoHistory(newUndoHistory);
-        setUndoStepNumber(newStep);
     };
 
     return (

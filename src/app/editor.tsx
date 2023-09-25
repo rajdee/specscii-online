@@ -12,7 +12,7 @@ import {SymbolsMode} from '@/app/models/symbols-mode';
 
 export default function Editor() {
     const [undoHistory, setUndoHistory] = useState<UndoHistory>([] as UndoHistory);
-    const [undoStepNumber, setUndoStepNumber] = useState<number | null>(null);
+    const [undoStepNumber, setUndoStepNumber] = useState<number>(0);
     const [symbolsMode, setSymbolsMode] = useState<SymbolsMode>('symbols');
     const [symbol, setSymbol] = useState<number>(32);
     const [grid, setGrid] = useState<boolean>(true);
