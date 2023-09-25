@@ -5,12 +5,16 @@ import {editorContext} from '@/app/models/editor-context';
 import {tokensToBasic} from '@/app/services/tokens-to-basic';
 import {jsonExporter} from '@/app/services/json-export';
 import {LoadFile} from '@/app/editor-controls/file-controls/load-file/load-file';
+import {cleanFieldsMapProvider} from '@/app/services/CleanFieldsMapProvider';
 
 export const FileControls = () => {
-    const {fieldsMap} = useContext(editorContext);
+    const {fieldsMap, setFieldsMap} = useContext(editorContext);
     const saveTokens = () => {
         const tokens = imageDataTransformer.convertToTokens(fieldsMap);
         downloadBinary(tokens, 'image.C');
+    };
+    const clear = () => {
+        setFieldsMap(cleanFieldsMapProvider.get());
     };
     const saveJson = () => {
         const json = jsonExporter.getJsonFromData(fieldsMap, 0);
@@ -45,9 +49,14 @@ export const FileControls = () => {
     };
 
     return <div className={styles['file-controls']}>
-        <input className={styles['save-file-button']} type="button" onClick={saveJson} value="Save json"/>
-        <input className={styles['save-file-button']} type="button" onClick={saveTokens} value="Save tokens"/>
-        <input className={styles['save-file-button']} type="button" onClick={saveBasic} value="Save basic"/>
-        <LoadFile />
+        <div>
+            <input className={styles['clear-button']} type="button" onClick={clear} value="Clear"/>
+        </div>
+        <div>
+            <input className={styles['save-file-button']} type="button" onClick={saveJson} value="Save json"/>
+            <input className={styles['save-file-button']} type="button" onClick={saveTokens} value="Save tokens"/>
+            <input className={styles['save-file-button']} type="button" onClick={saveBasic} value="Save basic"/>
+        </div>
+        <LoadFile/>
     </div>;
 };

@@ -1,5 +1,5 @@
 import styles from './editor-controls.module.css';
-import Palette from './palette/palette';
+import ColorsSelector from './colors-selector/colors-selector';
 import SymbolsSelector from './symbols-selector/symbols-selector';
 import {NullableBooleanSelector} from '@/app/editor-controls/nullable-boolean-selector/nullable-boolean-selector';
 import {useContext} from 'react';
@@ -14,7 +14,7 @@ export default function EditorControls() {
     return (
         <div className={styles.controls}>
             <div className={styles.top}>
-                <Palette></Palette>
+                <ColorsSelector></ColorsSelector>
                 <NullableBooleanSelector setting={bright} changeSetting={setBright}>Bright</NullableBooleanSelector>
                 <NullableBooleanSelector setting={flash} changeSetting={setFlash}>Flash</NullableBooleanSelector>
                 <CheckboxSelector setting={grid} changeSetting={setGrid}>Grid</CheckboxSelector>

@@ -9,6 +9,7 @@ import {useEffect, useState} from 'react';
 import {CanvasField} from '@/app/models/canvas-field';
 import {ZxColorNames} from '@/app/models/zx-color-names';
 import {SymbolsMode} from '@/app/models/symbols-mode';
+import {cleanFieldsMapProvider} from '@/app/services/CleanFieldsMapProvider';
 
 export default function Editor() {
     const [undoHistory, setUndoHistory] = useState<UndoHistory>([] as UndoHistory);
@@ -20,15 +21,7 @@ export default function Editor() {
     const [paper, setPaper] = useState<ZxColorNames | null>(ZxColorNames.WHITE);
     const [bright, setBright] = useState<boolean | null>(true);
     const [flash, setFlash] = useState<boolean | null>(false);
-    const [fieldsMap, setFieldsMap] = useState(Array(768).fill(null).map((_, index) => ({
-        ink: ZxColorNames.BLACK,
-        paper: ZxColorNames.WHITE,
-        symbol: 0,
-        bright: true,
-        flash: false,
-        x: index % 32,
-        y: Math.floor(index / 32),
-    } as CanvasField)));
+    const [fieldsMap, setFieldsMap] = useState(cleanFieldsMapProvider.get());
 
     useEffect(() => {
         if (typeof window !== 'undefined' && window.localStorage) {

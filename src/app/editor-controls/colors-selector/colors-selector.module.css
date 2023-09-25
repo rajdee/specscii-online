@@ -1,6 +1,10 @@
-.palette {
+.colors-selector {
     flex-basis: 20%;
+}
+
+.palettes {
     display: flex;
     flex-wrap: nowrap;
     gap: var(--size-sm);
+    height: calc(100% - 30px);
 }
