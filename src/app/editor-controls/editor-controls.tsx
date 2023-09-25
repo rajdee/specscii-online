@@ -6,6 +6,7 @@ import {useContext} from 'react';
 import {editorContext} from '@/app/models/editor-context';
 import {FileControls} from '@/app/editor-controls/file-controls/file-controls';
 import {CheckboxSelector} from '@/app/editor-controls/checkbox-selector/checkbox-selector';
+import {HistoryControls} from '@/app/editor-controls/history-controls/history-controls';
 
 export default function EditorControls() {
     const {bright, setBright, flash, setFlash, grid, setGrid} = useContext(editorContext);
@@ -18,6 +19,7 @@ export default function EditorControls() {
                 <NullableBooleanSelector setting={flash} changeSetting={setFlash}>Flash</NullableBooleanSelector>
                 <CheckboxSelector setting={grid} changeSetting={setGrid}>Grid</CheckboxSelector>
                 <FileControls></FileControls>
+                <HistoryControls></HistoryControls>
             </div>
             <SymbolsSelector></SymbolsSelector>
         </div>
