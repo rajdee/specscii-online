@@ -11,8 +11,8 @@ interface SymbolSelectorProps {
     changeSymbol: (symbolNumber: number) => void
 }
 
-const width = 16;
-const height = 16;
+const width = 8;
+const height = 8;
 export const SymbolSelector = ({symbolNumber, selected, changeSymbol}: SymbolSelectorProps) => {
     const className = selected?`${styles['symbol-selector']} ${styles['symbol-selector-selected']}`:`${styles['symbol-selector']} `;
     const canvasRef = useRef(null);
