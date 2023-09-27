@@ -5,7 +5,7 @@ import {ToggleButton, ToggleButtonGroup} from '@mui/material';
 
 export const SymbolsModeSelector = () => {
     const {symbolsMode, setSymbolsMode} = useContext(editorContext);
-    const handleChange = (event: React.MouseEvent<HTMLInputElement>, newMode: string) => {
+    const handleChange = (event: React.MouseEvent<HTMLElement>, newMode: string) => {
         switch (newMode) {
             case 'symbols':
                 setSymbolsMode('symbols');

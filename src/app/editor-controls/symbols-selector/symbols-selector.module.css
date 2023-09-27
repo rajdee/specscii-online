@@ -9,8 +9,7 @@
     flex-grow: 1;
     display: grid;
     grid-template-columns: repeat(8, 1fr);
-    grid-template-rows: repeat(14, calc(calc(100% / 14) - 5px));
-    gap: 5px;
+    grid-template-rows: repeat(14, calc(100% / 14));
     aspect-ratio: 8 / 14;
     align-self: start;
 }

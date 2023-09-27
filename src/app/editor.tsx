@@ -36,6 +36,9 @@ export default function Editor() {
             createTheme({
                 palette: {
                     mode: prefersDarkMode ? 'dark' : 'light',
+                    background: {
+                        default: '#F2F6FB',
+                    },
                 },
             }),
         [prefersDarkMode],
