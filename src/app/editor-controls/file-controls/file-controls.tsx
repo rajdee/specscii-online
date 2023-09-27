@@ -8,7 +8,7 @@ import {LoadFile} from '@/app/editor-controls/file-controls/load-file/load-file'
 import {cleanFieldsMapProvider} from '@/app/services/CleanFieldsMapProvider';
 import {Button, Dialog, DialogContent, Stack, TextField} from '@mui/material';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import SaveIcon from '@mui/icons-material/Save';
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -68,7 +68,7 @@ export const FileControls = () => {
     };
 
     return <div className={styles['file-controls']}>
-        <Button variant="contained" onClick={handleOpen}>Files</Button>
+        <Button startIcon={<SaveIcon fontSize="small"/>} variant="contained" onClick={handleOpen}>Files</Button>
 
         <Dialog open={open} onClose={handleClose}>
             <DialogContent>
@@ -85,9 +85,12 @@ export const FileControls = () => {
                     </Stack>
                     <Stack spacing={2}>
                         <h3>Save as</h3>
-                        <Button style={{justifyContent: "flex-start"}} startIcon={<CloudDownloadIcon/>} variant="contained" onClick={saveJson}>JSON</Button>
-                        <Button style={{justifyContent: "flex-start"}} startIcon={<CloudDownloadIcon/>} variant="outlined" onClick={saveTokens}>tokens</Button>
-                        <Button style={{justifyContent: "flex-start"}} startIcon={<CloudDownloadIcon/>} variant="outlined" onClick={saveBasic}>Basic</Button>
+                        <Button style={{justifyContent: 'flex-start'}} startIcon={<CloudDownloadIcon/>}
+                                variant="contained" onClick={saveJson}>JSON</Button>
+                        <Button style={{justifyContent: 'flex-start'}} startIcon={<CloudDownloadIcon/>}
+                                variant="outlined" onClick={saveTokens}>tokens</Button>
+                        <Button style={{justifyContent: 'flex-start'}} startIcon={<CloudDownloadIcon/>}
+                                variant="outlined" onClick={saveBasic}>Basic</Button>
                     </Stack>
                 </Stack>
             </DialogContent>

@@ -2,6 +2,8 @@ import {useContext} from 'react';
 import {undoHistoryContext} from '@/app/models/undo-context';
 import {editorContext} from '@/app/models/editor-context';
 import {Button, ButtonGroup} from '@mui/material';
+import UndoIcon from '@mui/icons-material/Undo';
+import RedoIcon from '@mui/icons-material/Redo';
 
 export const HistoryControls = () => {
     const {undoHistory, setUndoHistory, undoStepNumber, setUndoStepNumber} = useContext(undoHistoryContext);
@@ -30,7 +32,7 @@ export const HistoryControls = () => {
     const undoEnabled = undoStepNumber > 0;
 
     return <ButtonGroup variant="outlined" aria-label="outlined button group">
-        <Button disabled={!undoEnabled} onClick={undo}>Undo</Button>
-        <Button disabled={!redoEnabled} onClick={redo}>Redo</Button>
+        <Button startIcon={<UndoIcon fontSize="small"/>} disabled={!undoEnabled} onClick={undo}>Undo</Button>
+        <Button startIcon={<RedoIcon fontSize="small"/>} disabled={!redoEnabled} onClick={redo}>Redo</Button>
     </ButtonGroup>;
 };

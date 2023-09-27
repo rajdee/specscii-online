@@ -19,9 +19,9 @@ export default function EditorControls() {
                 <ColorsSelector></ColorsSelector>
                 <Stack spacing={2}>
                     <NullableBooleanSelector setting={bright} changeSetting={setBright}
-                                             optionIcon={<LightModeIcon/>}>Bright</NullableBooleanSelector>
+                                             optionIcon={<LightModeIcon fontSize="small" sx={{ mr: 1 }}/>}>Bright</NullableBooleanSelector>
                     <NullableBooleanSelector setting={flash} changeSetting={setFlash}
-                                             optionIcon={<FlashOnIcon/>}>Flash</NullableBooleanSelector>
+                                             optionIcon={<FlashOnIcon fontSize="small" sx={{ mr: 1 }}/>}>Flash</NullableBooleanSelector>
                     <CheckboxSelector setting={grid} changeSetting={setGrid}>Grid</CheckboxSelector>
                     <FileControls></FileControls>
                     <HistoryControls></HistoryControls>

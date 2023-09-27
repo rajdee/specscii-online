@@ -49,7 +49,7 @@ export const NullableBooleanSelector = ({setting, changeSetting, optionIcon, chi
         aria-label="Mode"
         size={'small'}
     >
-        <ToggleButton value="on">{optionIcon}&nbsp;{children} On</ToggleButton>
+        <ToggleButton value="on">{optionIcon}{children} On</ToggleButton>
         <ToggleButton value="off">Off</ToggleButton>
         <ToggleButton value="ignore">Ignore</ToggleButton>
     </ToggleButtonGroup>;
