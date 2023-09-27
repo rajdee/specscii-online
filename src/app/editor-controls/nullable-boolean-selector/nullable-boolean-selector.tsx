@@ -1,15 +1,31 @@
 import {ReactNode} from 'react';
 import styles from './nullable-boolean-selector.module.css';
+import {ToggleButton, ToggleButtonGroup} from '@mui/material';
 
 interface NullableBooleanSelectorProps {
     setting: boolean | null,
     changeSetting: (setting: boolean | null) => void,
+    optionIcon: ReactNode,
     children: ReactNode
 }
 
-export const NullableBooleanSelector = ({setting, changeSetting, children}: NullableBooleanSelectorProps) => {
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        switch (event.target.value) {
+export const NullableBooleanSelector = ({setting, changeSetting, optionIcon, children}: NullableBooleanSelectorProps) => {
+    let selected: 'on' | 'off' | 'ignore' = 'on';
+    switch (setting) {
+        case true:
+        default:
+            selected = 'on';
+            break;
+        case false:
+            selected = 'off';
+            break;
+        case null:
+            selected = 'ignore';
+            break;
+    }
+
+    const handleChange = (event: React.MouseEvent<HTMLElement>, value: any) => {
+        switch (value) {
             case 'on':
                 changeSetting(true);
                 break;
@@ -24,38 +40,18 @@ export const NullableBooleanSelector = ({setting, changeSetting, children}: Null
         }
     };
 
-    return (
-        <div>
-            {children}
-            <div>
-                <label className={styles.label}>
-                    <input
-                        type="radio"
-                        value="on"
-                        checked={setting === true}
-                        onChange={handleChange}
-                    />
-                    On
-                </label>
-                <label className={styles.label}>
-                    <input
-                        type="radio"
-                        value="off"
-                        checked={setting === false}
-                        onChange={handleChange}
-                    />
-                    Off
-                </label>
-                <label className={styles.label}>
-                    <input
-                        type="radio"
-                        value="ignore"
-                        checked={setting === null}
-                        onChange={handleChange}
-                    />
-                    Ignore
-                </label>
-            </div>
-        </div>
-    );
+    return <ToggleButtonGroup
+        className={styles.group}
+        color="primary"
+        value={selected}
+        exclusive
+        onChange={handleChange}
+        aria-label="Mode"
+        size={'small'}
+    >
+        <ToggleButton value="on">{optionIcon}&nbsp;{children} On</ToggleButton>
+        <ToggleButton value="off">Off</ToggleButton>
+        <ToggleButton value="ignore">Ignore</ToggleButton>
+    </ToggleButtonGroup>;
+
 };

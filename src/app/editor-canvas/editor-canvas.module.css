@@ -2,6 +2,8 @@
     height: 100%;
     width: 70%;
     overflow: auto;
+    padding: 1px;
+    box-sizing: border-box;
 }
 
 .editor-canvas-elements {

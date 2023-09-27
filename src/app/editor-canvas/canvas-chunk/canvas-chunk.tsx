@@ -62,7 +62,6 @@ export const CanvasChunk = ({canvasInk, canvasPaper, canvasBright, canvasFlash, 
     };
 
     const renderCanvas = () => {
-        const start = performance.now();
         const newInk = preview ? (ink || canvasInk) : canvasInk;
         const newPaper = preview ? (paper || canvasPaper) : canvasPaper;
         let newSymbol;
@@ -103,8 +102,6 @@ export const CanvasChunk = ({canvasInk, canvasPaper, canvasBright, canvasFlash, 
                 context.putImageData(imageData, 0, 0);
             }
         }
-        const end = performance.now();
-        console.log(fieldNumber + ': ' + (end - start) + 'ms');
     };
     const contextMenu = (event: React.MouseEvent<HTMLCanvasElement>) => {
         event.preventDefault();

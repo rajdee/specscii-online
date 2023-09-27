@@ -7,21 +7,27 @@ import {editorContext} from '@/app/models/editor-context';
 import {FileControls} from '@/app/editor-controls/file-controls/file-controls';
 import {CheckboxSelector} from '@/app/editor-controls/checkbox-selector/checkbox-selector';
 import {HistoryControls} from '@/app/editor-controls/history-controls/history-controls';
-
+import {Stack} from '@mui/material';
+import FlashOnIcon from '@mui/icons-material/FlashOn';
+import LightModeIcon from '@mui/icons-material/LightMode';
 export default function EditorControls() {
     const {bright, setBright, flash, setFlash, grid, setGrid} = useContext(editorContext);
 
     return (
-        <div className={styles.controls}>
-            <div className={styles.top}>
+        <Stack className={styles.controls} spacing={4}>
+            <Stack className={styles.top} spacing={2} direction="row">
                 <ColorsSelector></ColorsSelector>
-                <NullableBooleanSelector setting={bright} changeSetting={setBright}>Bright</NullableBooleanSelector>
-                <NullableBooleanSelector setting={flash} changeSetting={setFlash}>Flash</NullableBooleanSelector>
-                <CheckboxSelector setting={grid} changeSetting={setGrid}>Grid</CheckboxSelector>
-                <FileControls></FileControls>
-                <HistoryControls></HistoryControls>
-            </div>
+                <Stack spacing={2}>
+                    <NullableBooleanSelector setting={bright} changeSetting={setBright}
+                                             optionIcon={<LightModeIcon/>}>Bright</NullableBooleanSelector>
+                    <NullableBooleanSelector setting={flash} changeSetting={setFlash}
+                                             optionIcon={<FlashOnIcon/>}>Flash</NullableBooleanSelector>
+                    <CheckboxSelector setting={grid} changeSetting={setGrid}>Grid</CheckboxSelector>
+                    <FileControls></FileControls>
+                    <HistoryControls></HistoryControls>
+                </Stack>
+            </Stack>
             <SymbolsSelector></SymbolsSelector>
-        </div>
+        </Stack>
     );
 }

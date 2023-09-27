@@ -1,7 +1,20 @@
-import styles from '@/app/editor-controls/file-controls/file-controls.module.css';
 import {useContext, useRef} from 'react';
 import {editorContext} from '@/app/models/editor-context';
 import {jsonExporter} from '@/app/services/json-export';
+import {Button, styled} from '@mui/material';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+
+const VisuallyHiddenInput = styled('input')({
+    clip: 'rect(0 0 0 0)',
+    clipPath: 'inset(50%)',
+    height: 1,
+    overflow: 'hidden',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    whiteSpace: 'nowrap',
+    width: 1,
+});
 
 export const LoadFile = () => {
     const {setFieldsMap} = useContext(editorContext);
@@ -28,8 +41,8 @@ export const LoadFile = () => {
     };
 
 
-    return <div>
-        <input type="file" ref={fileInputRef}/>
-        <input className={styles['load-file-button']} type="button" onClick={buttonClick} value="Load json"/>
-    </div>;
+    return     <Button component="label" variant="contained" startIcon={<CloudUploadIcon />} onClick={buttonClick}>
+        JSON
+        <VisuallyHiddenInput type="file" ref={fileInputRef} />
+    </Button>
 };

@@ -1,14 +1,12 @@
 .controls {
     align-self: stretch;
-    display: flex;
-    position: relative;
-    box-sizing: border-box;
-    flex-direction: column;
-    align-items: flex-start;
+    /*display: flex;*/
+    /*position: relative;*/
+    /*box-sizing: border-box;*/
+    /*flex-direction: column;*/
+    /*align-items: flex-start;*/
 }
 
 .top {
     height: 50%;
-    display: flex;
-    gap: var(--size-md);
 }
