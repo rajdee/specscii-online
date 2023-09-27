@@ -6,10 +6,19 @@ interface NullableBooleanSelectorProps {
     setting: boolean | null,
     changeSetting: (setting: boolean | null) => void,
     optionIcon: ReactNode,
-    children: ReactNode
+    children: ReactNode,
+    labels?: Array<string>
 }
 
-export const NullableBooleanSelector = ({setting, changeSetting, optionIcon, children}: NullableBooleanSelectorProps) => {
+export const NullableBooleanSelector = ({
+                                            setting,
+                                            changeSetting,
+                                            optionIcon,
+                                            children,
+                                            labels,
+                                        }: NullableBooleanSelectorProps) => {
+    const internalLabels = labels ?? ['On', 'Off', 'Ignore'];
+
     let selected: 'on' | 'off' | 'ignore' = 'on';
     switch (setting) {
         case true:
@@ -49,9 +58,9 @@ export const NullableBooleanSelector = ({setting, changeSetting, optionIcon, chi
         aria-label="Mode"
         size={'small'}
     >
-        <ToggleButton value="on">{optionIcon}{children} On</ToggleButton>
-        <ToggleButton value="off">Off</ToggleButton>
-        <ToggleButton value="ignore">Ignore</ToggleButton>
+        <ToggleButton value="on">{optionIcon}{children} {internalLabels[0]}</ToggleButton>
+        <ToggleButton value="off">{internalLabels[1]}</ToggleButton>
+        <ToggleButton value="ignore">{internalLabels[2]}</ToggleButton>
     </ToggleButtonGroup>;
 
 };

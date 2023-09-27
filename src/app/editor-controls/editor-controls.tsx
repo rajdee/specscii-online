@@ -10,6 +10,8 @@ import {HistoryControls} from '@/app/editor-controls/history-controls/history-co
 import {Stack} from '@mui/material';
 import FlashOnIcon from '@mui/icons-material/FlashOn';
 import LightModeIcon from '@mui/icons-material/LightMode';
+import GridOnIcon from '@mui/icons-material/GridOn';
+
 export default function EditorControls() {
     const {bright, setBright, flash, setFlash, grid, setGrid} = useContext(editorContext);
 
@@ -18,11 +20,22 @@ export default function EditorControls() {
             <Stack className={styles.top} spacing={2} direction="row">
                 <ColorsSelector></ColorsSelector>
                 <Stack spacing={2}>
-                    <NullableBooleanSelector setting={bright} changeSetting={setBright}
-                                             optionIcon={<LightModeIcon fontSize="small" sx={{ mr: 1 }}/>}>Bright</NullableBooleanSelector>
-                    <NullableBooleanSelector setting={flash} changeSetting={setFlash}
-                                             optionIcon={<FlashOnIcon fontSize="small" sx={{ mr: 1 }}/>}>Flash</NullableBooleanSelector>
-                    <CheckboxSelector setting={grid} changeSetting={setGrid}>Grid</CheckboxSelector>
+                    <NullableBooleanSelector
+                        setting={bright}
+                        changeSetting={setBright}
+                        optionIcon={<LightModeIcon fontSize="small" sx={{mr: 1}}/>}
+                    >Bright</NullableBooleanSelector>
+                    <NullableBooleanSelector
+                        setting={flash}
+                        changeSetting={setFlash}
+                        optionIcon={<FlashOnIcon fontSize="small" sx={{mr: 1}}/>}
+                    >Flash</NullableBooleanSelector>
+                    <NullableBooleanSelector
+                        setting={grid}
+                        changeSetting={setGrid}
+                        optionIcon={<GridOnIcon fontSize="small" sx={{mr: 1}}/>}
+                        labels={['On', 'Dashed', 'Off']}
+                    >Grid</NullableBooleanSelector>
                     <FileControls></FileControls>
                     <HistoryControls></HistoryControls>
                 </Stack>

@@ -7,3 +7,7 @@
 .grid {
     outline: 1px solid #808080;
 }
+
+.grid-dashed {
+    outline: 1px dashed #808080;
+}

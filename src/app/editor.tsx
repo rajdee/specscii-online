@@ -23,7 +23,7 @@ export default function Editor() {
     const [undoStepNumber, setUndoStepNumber] = useState<number>(0);
     const [symbolsMode, setSymbolsMode] = useState<SymbolsMode>('symbols');
     const [symbol, setSymbol] = useState<number>(32);
-    const [grid, setGrid] = useState<boolean>(true);
+    const [grid, setGrid] = useState<boolean>(false);
     const [ink, setInk] = useState<ZxColorNames | null>(ZxColorNames.BLACK);
     const [paper, setPaper] = useState<ZxColorNames | null>(ZxColorNames.WHITE);
     const [bright, setBright] = useState<boolean | null>(true);

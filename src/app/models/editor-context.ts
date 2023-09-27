@@ -8,8 +8,8 @@ export type EditorContextValue = {
     setSymbolsMode: (symbolsMode: SymbolsMode) => void,
     symbol: number,
     setSymbol: (symbol: number) => void,
-    grid: boolean,
-    setGrid: (grid: boolean) => void,
+    grid: boolean | null,
+    setGrid: (grid: boolean | null) => void,
     ink: ZxColorNames | null,
     setInk: (ink: ZxColorNames | null) => void,
     paper: ZxColorNames | null,
@@ -28,8 +28,8 @@ const defaultValue: EditorContextValue = {
     symbol: 0,
     setSymbol: (symbol: number) => {
     },
-    grid: true,
-    setGrid: (grid: boolean) => {
+    grid: false,
+    setGrid: (grid: boolean | null) => {
     },
     ink: ZxColorNames.BLACK,
     setInk: (name: ZxColorNames | null) => {

@@ -208,7 +208,7 @@ export const CanvasChunk = ({canvasInk, canvasPaper, canvasBright, canvasFlash, 
         onClick={click}
         onContextMenu={contextMenu}
         ref={canvasRef}
-        className={`${styles['canvas-chunk']} ${grid ? styles['grid'] : ''}`}
+        className={`${styles['canvas-chunk']} ${grid === true ? styles['grid'] : ''}  ${grid === false ? styles['grid-dashed'] : ''}`}
         width={width}
         height={height}></canvas>;
 };
