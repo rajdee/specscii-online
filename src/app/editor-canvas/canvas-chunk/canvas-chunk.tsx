@@ -6,6 +6,7 @@ import {ZxColorNames} from '@/app/models/zx-color-names';
 import {paletteProvider} from '@/app/services/palette-provider';
 import {ZxColorTypes} from '@/app/models/zx-color-types';
 import {flashSwapContext} from '@/app/models/flash-swap-context';
+import {localStorageService} from '@/app/services/local-storage-service';
 
 interface Props {
     canvasInk: ZxColorNames,
@@ -13,7 +14,7 @@ interface Props {
     canvasBright: boolean,
     canvasFlash: boolean,
     fieldNumber: number,
-    symbolNumber: number
+    canvasSymbol: number
 }
 
 enum CanvasPosition {
@@ -25,8 +26,22 @@ enum CanvasPosition {
 
 const width = 8;
 const height = 8;
-export const CanvasChunk = ({canvasInk, canvasPaper, canvasBright, canvasFlash, fieldNumber, symbolNumber}: Props) => {
-    const {symbolsMode, symbol, ink, paper, fieldsMap, setFieldsMap, bright, flash} = useContext(editorContext);
+export const CanvasChunk = ({canvasInk, canvasPaper, canvasBright, canvasFlash, fieldNumber, canvasSymbol}: Props) => {
+    const {
+        symbolsMode,
+        symbol,
+        setSymbol,
+        ink,
+        setInk,
+        paper,
+        setPaper,
+        fieldsMap,
+        setFieldsMap,
+        bright,
+        setBright,
+        flash,
+        setFlash,
+    } = useContext(editorContext);
     const [preview, setPreview] = useState<boolean>(false);
     const [canvasPosition, setCanvasPosition] = useState<CanvasPosition>(CanvasPosition.TOPLEFT);
     const {flashSwap} = useContext(flashSwapContext);
@@ -40,7 +55,7 @@ export const CanvasChunk = ({canvasInk, canvasPaper, canvasBright, canvasFlash, 
             const newInk = ink ? ink : fieldsMap[fieldNumber].ink;
             const newPaper = paper ? paper : fieldsMap[fieldNumber].paper;
             const newSymbol =
-                symbolsMode === 'blocks' ? changeSymbolToBlock(symbolNumber, quickCanvasPosition, reset) :
+                symbolsMode === 'blocks' ? changeSymbolToBlock(canvasSymbol, quickCanvasPosition, reset) :
                     symbolsMode === 'symbols' ? symbol :
                         fieldsMap[fieldNumber].symbol;
             const newBright = bright !== null ? bright : fieldsMap[fieldNumber].bright;
@@ -55,9 +70,7 @@ export const CanvasChunk = ({canvasInk, canvasPaper, canvasBright, canvasFlash, 
                 flash: newFlash,
             };
             setFieldsMap(newFieldsMap);
-            if (typeof window !== 'undefined' && window.localStorage) {
-                localStorage.setItem('fieldsMap', JSON.stringify(newFieldsMap));
-            }
+            localStorageService.setItem('fieldsMap', newFieldsMap);
         }
     };
 
@@ -66,9 +79,9 @@ export const CanvasChunk = ({canvasInk, canvasPaper, canvasBright, canvasFlash, 
         const newPaper = preview ? (paper || canvasPaper) : canvasPaper;
         let newSymbol;
         if (symbolsMode === 'blocks') {
-            newSymbol = preview ? changeSymbolToBlock(symbolNumber, canvasPosition) : symbolNumber;
+            newSymbol = preview ? changeSymbolToBlock(canvasSymbol, canvasPosition) : canvasSymbol;
         } else {
-            newSymbol = preview ? (symbolsMode !== 'ignore' ? symbol : symbolNumber) : symbolNumber;
+            newSymbol = preview ? (symbolsMode !== 'ignore' ? symbol : canvasSymbol) : canvasSymbol;
         }
 
         const newBright = preview ? (bright !== null ? bright : canvasBright) : canvasBright;
@@ -105,20 +118,42 @@ export const CanvasChunk = ({canvasInk, canvasPaper, canvasBright, canvasFlash, 
     };
     const contextMenu = (event: React.MouseEvent<HTMLCanvasElement>) => {
         event.preventDefault();
-        const quickCanvasPosition = (symbolsMode === 'blocks') ? detectCanvasPosition(event) : null;
-        changeField(quickCanvasPosition, true);
+        if (symbolsMode === 'blocks') {
+            changeField(detectCanvasPosition(event), true);
+        }
     };
     const click = (event: React.MouseEvent<HTMLCanvasElement>) => {
         event.preventDefault();
         const quickCanvasPosition = (symbolsMode === 'blocks') ? detectCanvasPosition(event) : null;
+
         changeField(quickCanvasPosition);
+    };
+    const readFieldSettings = () => {
+        setInk(canvasInk);
+        setPaper(canvasPaper);
+        setSymbol(canvasSymbol);
+        setBright(canvasBright);
+        setFlash(canvasFlash);
     };
 
     const pointerMove = (event: React.PointerEvent<HTMLCanvasElement>) => {
         event.preventDefault();
         const quickCanvasPosition = (symbolsMode === 'blocks') ? detectCanvasPosition(event) : null;
-        if ((event.pointerType === 'mouse' && (event.buttons === 1 || event.buttons === 2)) || event.pointerType === 'touch') {
+        if (
+            event.pointerType === 'mouse' && (event.buttons === 1 || (event.buttons === 2 && symbolsMode === 'blocks')) ||
+            event.pointerType === 'touch'
+        ) {
             changeField(quickCanvasPosition, (event.buttons === 2));
+        }
+        if (event.pointerType === 'mouse' && event.buttons === 4) {
+            readFieldSettings();
+        }
+    };
+
+    const pointerDown = (event: React.PointerEvent<HTMLCanvasElement>) => {
+        event.preventDefault();
+        if (event.buttons === 4) {
+            readFieldSettings();
         }
     };
 
@@ -198,13 +233,14 @@ export const CanvasChunk = ({canvasInk, canvasPaper, canvasBright, canvasFlash, 
 
     useLayoutEffect(() => {
         renderCanvas();
-    }, [canvasInk, canvasPaper, canvasBright, canvasFlash, symbolNumber, updateRequired, preview, canvasPosition]);
+    }, [canvasInk, canvasPaper, canvasBright, canvasFlash, canvasSymbol, updateRequired, preview, canvasPosition]);
 
 
     return <canvas
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         onPointerMove={pointerMove}
+        onPointerDown={pointerDown}
         onClick={click}
         onContextMenu={contextMenu}
         ref={canvasRef}

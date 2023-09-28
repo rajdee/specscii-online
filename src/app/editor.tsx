@@ -9,7 +9,7 @@ import {useEffect, useMemo, useState} from 'react';
 import {CanvasField} from '@/app/models/canvas-field';
 import {ZxColorNames} from '@/app/models/zx-color-names';
 import {SymbolsMode} from '@/app/models/symbols-mode';
-import {cleanFieldsMapProvider} from '@/app/services/CleanFieldsMapProvider';
+import {cleanFieldsMapProvider} from '@/app/services/clean-fields-map-provider';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import {useMediaQuery} from '@mui/material';
@@ -17,13 +17,14 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
+import {localStorageService} from '@/app/services/local-storage-service';
 
 export default function Editor() {
     const [undoHistory, setUndoHistory] = useState<UndoHistory>([] as UndoHistory);
     const [undoStepNumber, setUndoStepNumber] = useState<number>(0);
     const [symbolsMode, setSymbolsMode] = useState<SymbolsMode>('symbols');
     const [symbol, setSymbol] = useState<number>(32);
-    const [grid, setGrid] = useState<boolean>(false);
+    const [grid, setGrid] = useState<boolean | null>(false);
     const [ink, setInk] = useState<ZxColorNames | null>(ZxColorNames.BLACK);
     const [paper, setPaper] = useState<ZxColorNames | null>(ZxColorNames.WHITE);
     const [bright, setBright] = useState<boolean | null>(true);
@@ -45,11 +46,10 @@ export default function Editor() {
     );
 
     useEffect(() => {
-        if (typeof window !== 'undefined' && window.localStorage) {
-            const fieldsMap = localStorage.getItem('fieldsMap');
-            if (fieldsMap) {
-                setFieldsMap(JSON.parse(fieldsMap) as CanvasField[]);
-            }
+
+        const fieldsMap = localStorageService.getItem('fieldsMap');
+        if (fieldsMap) {
+            setFieldsMap(fieldsMap as CanvasField[]);
         }
     }, []);
 
@@ -74,6 +74,5 @@ export default function Editor() {
                 </undoHistoryContext.Provider>
             </main>
         </ThemeProvider>
-
     );
 }

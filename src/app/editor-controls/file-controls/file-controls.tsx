@@ -5,35 +5,32 @@ import {editorContext} from '@/app/models/editor-context';
 import {tokensToBasic} from '@/app/services/tokens-to-basic';
 import {jsonExporter} from '@/app/services/json-export';
 import {LoadFile} from '@/app/editor-controls/file-controls/load-file/load-file';
-import {cleanFieldsMapProvider} from '@/app/services/CleanFieldsMapProvider';
+import {cleanFieldsMapProvider} from '@/app/services/clean-fields-map-provider';
 import {Button, Dialog, DialogContent, Stack, TextField} from '@mui/material';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import SaveIcon from '@mui/icons-material/Save';
+import {undoHistoryService} from '@/app/services/undo-history-service';
+import {undoHistoryContext} from '@/app/models/undo-context';
+import {localStorageService} from '@/app/services/local-storage-service';
 
-const style = {
-    position: 'absolute' as 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-};
 export const FileControls = () => {
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    const {fieldsMap, setFieldsMap} = useContext(editorContext);
+    const {fieldsMap, setFieldsMap, ink, paper, bright, flash, symbol} = useContext(editorContext);
+    const {undoStepNumber, setUndoStepNumber, undoHistory, setUndoHistory} = useContext(undoHistoryContext);
     const saveTokens = () => {
         const tokens = imageDataTransformer.convertToTokens(fieldsMap);
         downloadBinary(tokens, 'image.C');
     };
     const clear = () => {
-        setFieldsMap(cleanFieldsMapProvider.get());
+        undoHistoryService.writeHistoryStep(fieldsMap, undoStepNumber, setUndoStepNumber, undoHistory, setUndoHistory);
+
+        const clearFieldsMap = cleanFieldsMapProvider.get(ink ?? undefined, paper ?? undefined, bright ?? undefined, flash ?? undefined, symbol ?? undefined);
+        setFieldsMap(clearFieldsMap);
+        localStorageService.setItem('fieldsMap', clearFieldsMap);
     };
     const saveJson = () => {
         const json = jsonExporter.getJsonFromData(fieldsMap, 0);

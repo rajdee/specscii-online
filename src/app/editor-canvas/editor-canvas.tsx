@@ -5,6 +5,7 @@ import {editorContext} from '@/app/models/editor-context';
 import {flashSwapContext} from '@/app/models/flash-swap-context';
 import {undoHistoryContext} from '@/app/models/undo-context';
 import {CanvasField} from '@/app/models/canvas-field';
+import {undoHistoryService} from '@/app/services/undo-history-service';
 
 export default function EditorCanvas() {
     const {fieldsMap} = useContext(editorContext);
@@ -21,7 +22,7 @@ export default function EditorCanvas() {
                          canvasBright={field.bright}
                          canvasFlash={field.flash}
                          fieldNumber={fieldNumber++}
-                         symbolNumber={field.symbol}
+                         canvasSymbol={field.symbol}
             />,
         ),
     );
@@ -37,22 +38,13 @@ export default function EditorCanvas() {
             };
         }, [],
     );
+
     const startCapturing = () => {
         setBeforeFieldsMap([...fieldsMap]);
     };
+
     const endCapturing = () => {
-        const maxSteps = 100;
-        const newUndoHistory = undoStepNumber === undoHistory.length ? undoHistory : undoHistory.slice(0, undoStepNumber);
-        newUndoHistory.push(beforeFieldsMap);
-
-        if (newUndoHistory.length > maxSteps) {
-            newUndoHistory.shift();
-            setUndoStepNumber(maxSteps);
-        } else {
-            setUndoStepNumber(undoStepNumber + 1);
-        }
-
-        setUndoHistory(newUndoHistory);
+        undoHistoryService.writeHistoryStep(beforeFieldsMap, undoStepNumber, setUndoStepNumber, undoHistory, setUndoHistory);
     };
 
     return (

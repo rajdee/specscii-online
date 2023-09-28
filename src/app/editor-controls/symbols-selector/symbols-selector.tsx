@@ -4,7 +4,7 @@ import {symbolsProvider} from '@/app/services/symbols-provider';
 import {SymbolSelector} from '@/app/editor-controls/symbols-selector/symbol-selector/symbol-selector';
 import styles from './symbols-selector.module.css';
 import {SymbolsModeSelector} from '@/app/editor-controls/symbols-selector/symbols-mode-selector/symbols-mode-selector';
-import {CardContent, Card, CardActions} from '@mui/material';
+import {Stack, Paper} from '@mui/material';
 
 export default function SymbolsSelector() {
     const {symbol, setSymbol, setSymbolsMode} = useContext(editorContext);
@@ -20,9 +20,12 @@ export default function SymbolsSelector() {
                                            changeSymbol={changeSymbol}></SymbolSelector>);
         }
     }
-    return <Card className={styles['symbols-selector']} variant="outlined">
-        <CardActions><SymbolsModeSelector/></CardActions>
-        <CardContent className={styles['symbols-selector-grid']}>{selectors}</CardContent>
-    </Card>;
+    return <Stack gap={2} className={styles['symbols-selector']}>
+        <SymbolsModeSelector/>
+        <Paper className={styles['symbols-selector-grid']}>
+            {selectors}
+        </Paper>
+    </Stack>;
+
 
 }

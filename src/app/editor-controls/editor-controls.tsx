@@ -7,7 +7,7 @@ import {editorContext} from '@/app/models/editor-context';
 import {FileControls} from '@/app/editor-controls/file-controls/file-controls';
 import {CheckboxSelector} from '@/app/editor-controls/checkbox-selector/checkbox-selector';
 import {HistoryControls} from '@/app/editor-controls/history-controls/history-controls';
-import {Stack} from '@mui/material';
+import {Paper, Stack} from '@mui/material';
 import FlashOnIcon from '@mui/icons-material/FlashOn';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import GridOnIcon from '@mui/icons-material/GridOn';
@@ -30,6 +30,7 @@ export default function EditorControls() {
                         changeSetting={setFlash}
                         optionIcon={<FlashOnIcon fontSize="small" sx={{mr: 1}}/>}
                     >Flash</NullableBooleanSelector>
+                    <HistoryControls></HistoryControls>
                     <NullableBooleanSelector
                         setting={grid}
                         changeSetting={setGrid}
@@ -37,7 +38,6 @@ export default function EditorControls() {
                         labels={['On', 'Dashed', 'Off']}
                     >Grid</NullableBooleanSelector>
                     <FileControls></FileControls>
-                    <HistoryControls></HistoryControls>
                 </Stack>
             </Stack>
             <SymbolsSelector></SymbolsSelector>

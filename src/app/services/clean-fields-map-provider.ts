@@ -2,18 +2,17 @@ import {ZxColorNames} from '@/app/models/zx-color-names';
 import {CanvasField} from '@/app/models/canvas-field';
 
 class CleanFieldsMapProvider {
-    public get = ()=>{
+    public get = (ink: ZxColorNames = ZxColorNames.BLACK, paper: ZxColorNames = ZxColorNames.WHITE, bright: boolean = true, flash: boolean = false, symbol: number = 0) => {
         return Array(768).fill(null).map((_, index) => ({
-            ink: ZxColorNames.BLACK,
-            paper: ZxColorNames.WHITE,
-            symbol: 0,
-            bright: true,
-            flash: false,
+            ink,
+            paper,
+            symbol,
+            bright,
+            flash,
             x: index % 32,
             y: Math.floor(index / 32),
-        } as CanvasField))
-    }
+        } as CanvasField));
+    };
 }
-
 
 export const cleanFieldsMapProvider = new CleanFieldsMapProvider();

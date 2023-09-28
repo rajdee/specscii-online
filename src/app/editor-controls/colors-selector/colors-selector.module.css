@@ -6,5 +6,6 @@
     display: flex;
     flex-wrap: nowrap;
     gap: var(--size-sm);
-    height: calc(100% - 30px);
+    max-height: calc(100% - 30px);
+    flex-grow: 1;
 }

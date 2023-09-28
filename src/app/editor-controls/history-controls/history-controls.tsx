@@ -4,6 +4,7 @@ import {editorContext} from '@/app/models/editor-context';
 import {Button, ButtonGroup} from '@mui/material';
 import UndoIcon from '@mui/icons-material/Undo';
 import RedoIcon from '@mui/icons-material/Redo';
+import {localStorageService} from '@/app/services/local-storage-service';
 
 export const HistoryControls = () => {
     const {undoHistory, setUndoHistory, undoStepNumber, setUndoStepNumber} = useContext(undoHistoryContext);
@@ -17,13 +18,17 @@ export const HistoryControls = () => {
         }
 
         const newStep = undoStepNumber - 1;
-        setFieldsMap(undoHistory[newStep]);
+        const newFieldsMap = undoHistory[newStep];
+        setFieldsMap(newFieldsMap);
+        localStorageService.setItem('fieldsMap', newFieldsMap);
         setUndoStepNumber(newStep);
     };
 
     const redo = () => {
         if (undoStepNumber < undoHistory.length) {
-            setFieldsMap(undoHistory[undoStepNumber + 1]);
+            const newFieldsMap = undoHistory[undoStepNumber + 1];
+            setFieldsMap(newFieldsMap);
+            localStorageService.setItem('fieldsMap', newFieldsMap);
             setUndoStepNumber(undoStepNumber + 1);
         }
     };

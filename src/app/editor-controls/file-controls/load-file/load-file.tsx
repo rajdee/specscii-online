@@ -3,6 +3,7 @@ import {editorContext} from '@/app/models/editor-context';
 import {jsonExporter} from '@/app/services/json-export';
 import {Button, styled} from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import {localStorageService} from '@/app/services/local-storage-service';
 
 const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
@@ -20,9 +21,9 @@ export const LoadFile = () => {
     const {setFieldsMap} = useContext(editorContext);
     const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-    const buttonClick = () => {
-        const fileInput = fileInputRef.current as HTMLInputElement;
-        if (fileInput) {
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const fileInput = fileInputRef.current;
+        if (fileInput && fileInput.files && fileInput.files.length > 0) {
             const reader = new FileReader();
             reader.addEventListener(
                 'load',
@@ -30,19 +31,23 @@ export const LoadFile = () => {
                     if (reader.result) {
                         const data = jsonExporter.getDataFromJson(String(reader.result));
                         setFieldsMap(data.fields);
+                        localStorageService.setItem('fieldsMap', data.fields);
                     }
                 },
                 false,
             );
-            if (fileInput.files && fileInput.files.length > 0) {
-                reader.readAsText(fileInput.files[0]);
-            }
+            reader.readAsText(fileInput.files[0]);
         }
     };
 
-
-    return     <Button component="label" variant="contained" startIcon={<CloudUploadIcon />} onClick={buttonClick}>
-        JSON
-        <VisuallyHiddenInput type="file" ref={fileInputRef} />
-    </Button>
+    return (
+        <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
+            JSON
+            <VisuallyHiddenInput
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileChange}  // Добавляем обработчик события
+            />
+        </Button>
+    );
 };
