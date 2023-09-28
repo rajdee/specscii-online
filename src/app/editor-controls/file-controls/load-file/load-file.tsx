@@ -4,6 +4,7 @@ import {jsonExporter} from '@/app/services/json-export';
 import {Button, styled} from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import {localStorageService} from '@/app/services/local-storage-service';
+import {imageContext} from '@/app/models/image-context';
 
 const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
@@ -18,6 +19,7 @@ const VisuallyHiddenInput = styled('input')({
 });
 
 export const LoadFile = () => {
+    const {setAuthor, setImageName} = useContext(imageContext);
     const {setFieldsMap} = useContext(editorContext);
     const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -30,7 +32,13 @@ export const LoadFile = () => {
                 () => {
                     if (reader.result) {
                         const data = jsonExporter.getDataFromJson(String(reader.result));
+
                         setFieldsMap(data.fields);
+                        setAuthor(data.author ?? '');
+                        setImageName(data.imageName ?? '');
+
+                        localStorageService.setItem('imageName', data.imageName ?? '');
+                        localStorageService.setItem('author', data.author ?? '');
                         localStorageService.setItem('fieldsMap', data.fields);
                     }
                 },
@@ -41,7 +49,7 @@ export const LoadFile = () => {
     };
 
     return (
-        <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
+        <Button component="label" variant="contained" startIcon={<CloudUploadIcon/>}>
             JSON
             <VisuallyHiddenInput
                 type="file"

@@ -18,8 +18,11 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import {localStorageService} from '@/app/services/local-storage-service';
+import {imageContext} from '@/app/models/image-context';
 
 export default function Editor() {
+    const [author, setAuthor] = useState<string>('');
+    const [imageName, setImageName] = useState<string>('');
     const [undoHistory, setUndoHistory] = useState<UndoHistory>([] as UndoHistory);
     const [undoStepNumber, setUndoStepNumber] = useState<number>(0);
     const [symbolsMode, setSymbolsMode] = useState<SymbolsMode>('symbols');
@@ -51,27 +54,38 @@ export default function Editor() {
         if (fieldsMap) {
             setFieldsMap(fieldsMap as CanvasField[]);
         }
+        const author = localStorageService.getItem('author');
+        if (author) {
+            setAuthor(author);
+        }
+        const imageName = localStorageService.getItem('imageName');
+        if (imageName) {
+            setImageName(imageName);
+        }
     }, []);
 
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline/>
             <main className={styles.editor}>
-                <undoHistoryContext.Provider value={{undoHistory, setUndoHistory, undoStepNumber, setUndoStepNumber}}>
-                    <editorContext.Provider value={{
-                        symbolsMode, setSymbolsMode,
-                        symbol, setSymbol,
-                        ink, setInk,
-                        paper, setPaper,
-                        fieldsMap, setFieldsMap,
-                        bright, setBright,
-                        flash, setFlash,
-                        grid, setGrid,
-                    }}>
-                        <EditorCanvas/>
-                        <EditorControls/>
-                    </editorContext.Provider>
-                </undoHistoryContext.Provider>
+                <imageContext.Provider value={{author, setAuthor, imageName, setImageName}}>
+                    <undoHistoryContext.Provider
+                        value={{undoHistory, setUndoHistory, undoStepNumber, setUndoStepNumber}}>
+                        <editorContext.Provider value={{
+                            symbolsMode, setSymbolsMode,
+                            symbol, setSymbol,
+                            ink, setInk,
+                            paper, setPaper,
+                            fieldsMap, setFieldsMap,
+                            bright, setBright,
+                            flash, setFlash,
+                            grid, setGrid,
+                        }}>
+                            <EditorCanvas/>
+                            <EditorControls/>
+                        </editorContext.Provider>
+                    </undoHistoryContext.Provider>
+                </imageContext.Provider>
             </main>
         </ThemeProvider>
     );

@@ -1,4 +1,3 @@
-
 const before = [
     0,
     10,
@@ -9,7 +8,7 @@ const before = [
     14,
     0,
     0,
-    1,
+    0,
     0,
     0,
     13,
@@ -28,10 +27,17 @@ const after = [
     0,
     0,
 ];
+const quotes = 34;
 
 class TokensToBasic {
     public convertToBasic(tokens: Array<number>) {
-        return [...before, ...tokens, ...after];
+        const updatedTokens = tokens.flatMap(token => {
+            if (token === 34) {
+                return [34, 34];
+            }
+            return token;
+        });
+        return [...before, ...updatedTokens, ...after];
     }
 }
 

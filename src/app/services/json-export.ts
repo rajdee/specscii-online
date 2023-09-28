@@ -9,11 +9,13 @@ export interface ExportJson {
     src: string,
     url: string,
     border: BorderColor,
-    fields: CanvasField[]
+    fields: CanvasField[],
+    author: string,
+    imageName: string,
 }
 
 export const jsonExporter = new class JsonExporter {
-    public getJsonFromData(fields: CanvasField[], border: BorderColor): ExportJson {
+    public getJsonFromData(fields: CanvasField[], border: BorderColor, author: string, imageName: string): ExportJson {
         return {
             application: APP_NAME,
             version: APP_VERSION,
@@ -21,6 +23,8 @@ export const jsonExporter = new class JsonExporter {
             url: APP_URL,
             border,
             fields,
+            author,
+            imageName,
         };
     }
 
