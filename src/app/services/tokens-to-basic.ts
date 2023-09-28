@@ -1,4 +1,4 @@
-const before = [
+const part1 = [
     0,
     10,
     9,
@@ -14,12 +14,12 @@ const before = [
     13,
     0,
     20,
-    14,
-    0,
+];
+const part2 = [
     245,
     34,
 ];
-const after = [
+const part3 = [
     34,
     13,
     128,
@@ -32,12 +32,16 @@ const quotes = 34;
 class TokensToBasic {
     public convertToBasic(tokens: Array<number>) {
         const updatedTokens = tokens.flatMap(token => {
-            if (token === 34) {
-                return [34, 34];
+            if (token === quotes) {
+                return [quotes, quotes];
             }
             return token;
         });
-        return [...before, ...updatedTokens, ...after];
+
+        const len1 = (length & 0xFF00) >> 8; // старший байт
+        const len2 = length & 0x00FF; // младший байт
+
+        return [...part1, len2, len1, ...part2, ...updatedTokens, ...part3];
     }
 }
 
