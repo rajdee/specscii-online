@@ -1,5 +1,4 @@
 import styles from './canvas-chunk.module.css';
-import {FontSymbol, FontSymbolRow, symbolsProvider} from '@/app/services/symbols-provider';
 import {useContext, useLayoutEffect, useRef, useState} from 'react';
 import {editorContext} from '@/app/models/editor-context';
 import {ZxColorNames} from '@/app/models/zx-color-names';
@@ -7,6 +6,7 @@ import {paletteProvider} from '@/app/services/palette-provider';
 import {ZxColorTypes} from '@/app/models/zx-color-types';
 import {flashSwapContext} from '@/app/models/flash-swap-context';
 import {localStorageService} from '@/app/services/local-storage-service';
+import {imageDataCache} from '@/app/services/image-data-cache';
 
 interface Props {
     canvasInk: ZxColorNames,
@@ -185,7 +185,6 @@ export const CanvasChunk = ({canvasInk, canvasPaper, canvasBright, canvasFlash, 
     };
 
     useLayoutEffect(() => {
-        // console.log(fieldNumber, canvasPosition);
         const newInk = preview ? (ink || canvasInk) : canvasInk;
         const newPaper = preview ? (paper || canvasPaper) : canvasPaper;
         let newSymbol;
@@ -198,30 +197,18 @@ export const CanvasChunk = ({canvasInk, canvasPaper, canvasBright, canvasFlash, 
         const newBright = preview ? (bright !== null ? bright : canvasBright) : canvasBright;
         const newFlash = preview ? (flash !== null ? flash : canvasFlash) : canvasFlash;
 
-        const inkColor = paletteProvider.getColor(newInk, newBright ? ZxColorTypes.BRIGHT : ZxColorTypes.DARK);
-        const paperColor = paletteProvider.getColor(newPaper, newBright ? ZxColorTypes.BRIGHT : ZxColorTypes.DARK);
+        const flashActive = (!newFlash || !flashSwap);
+        const flashedInk = flashActive ? newInk : newPaper;
+        const flashedPaper = flashActive ? newPaper : newInk;
 
-        const paintedSymbol = symbolsProvider.getSymbol(newSymbol);
         if (canvasRef && canvasRef.current) {
             const canvas = canvasRef.current as HTMLCanvasElement;
             const context = canvas.getContext('2d');
             if (context) {
                 const imageData = context.createImageData(width, height);
                 const data = imageData?.data;
-                if (paintedSymbol && data) {
-                    for (const rowStr of Object.keys(paintedSymbol)) {
-                        const row = Number(rowStr) as keyof FontSymbol;
-                        for (const numStr of Object.keys(paintedSymbol[row])) {
-                            const num = Number(numStr) as keyof FontSymbolRow;
-                            const byte = paintedSymbol[row][num];
-                            const color = (!newFlash || !flashSwap) ? (byte ? inkColor : paperColor) : (byte ? paperColor : inkColor);
-                            const i = ((row * width) + +num) * 4;
-                            data[i] = color.r;
-                            data[i + 1] = color.g;
-                            data[i + 2] = color.b;
-                            data[i + 3] = color.a;
-                        }
-                    }
+                if (newSymbol !== undefined && data) {
+                    imageData.data.set(imageDataCache.getImageData(data, newSymbol, newBright, flashedInk, flashedPaper));
                 }
                 context.putImageData(imageData, 0, 0);
             }
