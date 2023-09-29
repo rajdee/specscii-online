@@ -43,7 +43,7 @@ export const CanvasChunk = ({canvasInk, canvasPaper, canvasBright, canvasFlash, 
         setFlash,
     } = useContext(editorContext);
     const [preview, setPreview] = useState<boolean>(false);
-    const [canvasPosition, setCanvasPosition] = useState<CanvasPosition>(CanvasPosition.TOPLEFT);
+    const [canvasPosition, setCanvasPosition] = useState<CanvasPosition | null>(null);
     const {flashSwap} = useContext(flashSwapContext);
     const {grid} = useContext(editorContext);
 
@@ -74,48 +74,6 @@ export const CanvasChunk = ({canvasInk, canvasPaper, canvasBright, canvasFlash, 
         }
     };
 
-    const renderCanvas = () => {
-        const newInk = preview ? (ink || canvasInk) : canvasInk;
-        const newPaper = preview ? (paper || canvasPaper) : canvasPaper;
-        let newSymbol;
-        if (symbolsMode === 'blocks') {
-            newSymbol = preview ? changeSymbolToBlock(canvasSymbol, canvasPosition) : canvasSymbol;
-        } else {
-            newSymbol = preview ? (symbolsMode !== 'ignore' ? symbol : canvasSymbol) : canvasSymbol;
-        }
-
-        const newBright = preview ? (bright !== null ? bright : canvasBright) : canvasBright;
-        const newFlash = preview ? (flash !== null ? flash : canvasFlash) : canvasFlash;
-
-        const inkColor = paletteProvider.getColor(newInk, newBright ? ZxColorTypes.BRIGHT : ZxColorTypes.DARK);
-        const paperColor = paletteProvider.getColor(newPaper, newBright ? ZxColorTypes.BRIGHT : ZxColorTypes.DARK);
-
-        const paintedSymbol = symbolsProvider.getSymbol(newSymbol);
-        if (canvasRef && canvasRef.current) {
-            const canvas = canvasRef.current as HTMLCanvasElement;
-            const context = canvas.getContext('2d');
-            if (context) {
-                const imageData = context.createImageData(width, height);
-                const data = imageData?.data;
-                if (paintedSymbol && data) {
-                    for (const rowStr of Object.keys(paintedSymbol)) {
-                        const row = Number(rowStr) as keyof FontSymbol;
-                        for (const numStr of Object.keys(paintedSymbol[row])) {
-                            const num = Number(numStr) as keyof FontSymbolRow;
-                            const byte = paintedSymbol[row][num];
-                            const color = (!newFlash || !flashSwap) ? (byte ? inkColor : paperColor) : (byte ? paperColor : inkColor);
-                            const i = ((row * width) + +num) * 4;
-                            data[i] = color.r;
-                            data[i + 1] = color.g;
-                            data[i + 2] = color.b;
-                            data[i + 3] = color.a;
-                        }
-                    }
-                }
-                context.putImageData(imageData, 0, 0);
-            }
-        }
-    };
     const contextMenu = (event: React.MouseEvent<HTMLCanvasElement>) => {
         event.preventDefault();
         if (symbolsMode === 'blocks') {
@@ -168,7 +126,9 @@ export const CanvasChunk = ({canvasInk, canvasPaper, canvasBright, canvasFlash, 
     };
 
     const detectCanvasPosition = (event: React.MouseEvent<HTMLCanvasElement>) => {
-        let position = CanvasPosition.TOPLEFT;
+
+
+        let position = null;
 
         if (canvasRef && canvasRef.current) {
             const canvas = canvasRef.current as HTMLCanvasElement;
@@ -179,19 +139,18 @@ export const CanvasChunk = ({canvasInk, canvasPaper, canvasBright, canvasFlash, 
             const isLeft = event.nativeEvent.offsetX < halfWidth;
             const isTop = event.nativeEvent.offsetY < halfHeight;
 
-
             if (isLeft && isTop) {
                 position = CanvasPosition.TOPLEFT;
             } else if (!isLeft && isTop) {
                 position = CanvasPosition.TOPRIGHT;
             } else if (isLeft && !isTop) {
                 position = CanvasPosition.BOTTOMLEFT;
-            } else {
+            } else if (!isLeft && !isTop) {
                 position = CanvasPosition.BOTTOMRIGHT;
             }
         }
         setCanvasPosition(position);
-
+        // console.log('detect', position);
         return position;
     };
 
@@ -232,7 +191,47 @@ export const CanvasChunk = ({canvasInk, canvasPaper, canvasBright, canvasFlash, 
     };
 
     useLayoutEffect(() => {
-        renderCanvas();
+        // console.log(fieldNumber, canvasPosition);
+        const newInk = preview ? (ink || canvasInk) : canvasInk;
+        const newPaper = preview ? (paper || canvasPaper) : canvasPaper;
+        let newSymbol;
+        if (symbolsMode === 'blocks') {
+            newSymbol = preview ? changeSymbolToBlock(canvasSymbol, canvasPosition) : canvasSymbol;
+        } else {
+            newSymbol = preview ? (symbolsMode !== 'ignore' ? symbol : canvasSymbol) : canvasSymbol;
+        }
+
+        const newBright = preview ? (bright !== null ? bright : canvasBright) : canvasBright;
+        const newFlash = preview ? (flash !== null ? flash : canvasFlash) : canvasFlash;
+
+        const inkColor = paletteProvider.getColor(newInk, newBright ? ZxColorTypes.BRIGHT : ZxColorTypes.DARK);
+        const paperColor = paletteProvider.getColor(newPaper, newBright ? ZxColorTypes.BRIGHT : ZxColorTypes.DARK);
+
+        const paintedSymbol = symbolsProvider.getSymbol(newSymbol);
+        if (canvasRef && canvasRef.current) {
+            const canvas = canvasRef.current as HTMLCanvasElement;
+            const context = canvas.getContext('2d');
+            if (context) {
+                const imageData = context.createImageData(width, height);
+                const data = imageData?.data;
+                if (paintedSymbol && data) {
+                    for (const rowStr of Object.keys(paintedSymbol)) {
+                        const row = Number(rowStr) as keyof FontSymbol;
+                        for (const numStr of Object.keys(paintedSymbol[row])) {
+                            const num = Number(numStr) as keyof FontSymbolRow;
+                            const byte = paintedSymbol[row][num];
+                            const color = (!newFlash || !flashSwap) ? (byte ? inkColor : paperColor) : (byte ? paperColor : inkColor);
+                            const i = ((row * width) + +num) * 4;
+                            data[i] = color.r;
+                            data[i + 1] = color.g;
+                            data[i + 2] = color.b;
+                            data[i + 3] = color.a;
+                        }
+                    }
+                }
+                context.putImageData(imageData, 0, 0);
+            }
+        }
     }, [canvasInk, canvasPaper, canvasBright, canvasFlash, canvasSymbol, updateRequired, preview, canvasPosition]);
 
 

@@ -40,10 +40,11 @@ export default function Editor() {
     const theme = useMemo(
         () =>
             createTheme({
+                spacing: 4,
                 palette: {
                     mode: prefersDarkMode ? 'dark' : 'light',
                     background: {
-                        default: '#F2F6FB',
+                        default: prefersDarkMode ? '#202020' : '#F2F6FB',
                     },
                 },
             }),
@@ -67,10 +68,9 @@ export default function Editor() {
     }, []);
 
     const keyHandler = (event: KeyboardEvent) => {
-        if (event.key === 'z' && event.ctrlKey){
+        if (event.key === 'z' && event.ctrlKey) {
             undoHistoryService.undo(fieldsMap, setFieldsMap, undoStepNumber, setUndoStepNumber, undoHistory, setUndoHistory);
-        }
-        else if (event.key === 'y' && event.ctrlKey){
+        } else if (event.key === 'y' && event.ctrlKey) {
             undoHistoryService.redo(fieldsMap, setFieldsMap, undoStepNumber, setUndoStepNumber, undoHistory, setUndoHistory);
         }
     };

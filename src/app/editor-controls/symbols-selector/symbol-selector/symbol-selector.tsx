@@ -4,7 +4,6 @@ import {paletteProvider} from '@/app/services/palette-provider';
 import styles from './symbol-selector.module.css';
 import {ZxColorNames} from '@/app/models/zx-color-names';
 import {ZxColorTypes} from '@/app/models/zx-color-types';
-import {ButtonBase} from '@mui/material';
 
 interface SymbolSelectorProps {
     symbolNumber: number,
@@ -47,23 +46,24 @@ export const SymbolSelector = ({symbolNumber, selected, changeSymbol}: SymbolSel
             }
         }
     }, [symbolNumber, selected]);
-    const click = (event: React.MouseEvent<HTMLCanvasElement>) => {
+    const click = (event: React.MouseEvent<HTMLDivElement>) => {
         event.preventDefault();
         changeSymbol(symbolNumber);
     };
-    const pointerMove = (event: React.PointerEvent<HTMLCanvasElement>) => {
+    const pointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
         event.preventDefault();
         if ((event.pointerType === 'mouse' && event.buttons === 1) || event.pointerType === 'touch') {
             changeSymbol(symbolNumber);
         }
     };
-    return <ButtonBase className={className}>
+    return <div className={className}
+                onClick={click}
+                onPointerMove={pointerMove}
+    >
         <canvas
             className={styles.canvas}
-            onPointerMove={pointerMove}
-            onClick={click}
             ref={canvasRef}
             width={width}
             height={height}></canvas>
-    </ButtonBase>;
+    </div>;
 };

@@ -6,7 +6,11 @@
     color: rgba(0, 0, 0, 0.54);
     text-transform: uppercase;
 }
-
+@media (max-height: 800px) {
+    .colors-selector {
+        font-size: 6px;
+    }
+}
 .palettes {
     display: flex;
     flex-wrap: nowrap;

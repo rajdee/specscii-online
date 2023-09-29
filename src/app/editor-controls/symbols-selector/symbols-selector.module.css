@@ -13,3 +13,12 @@
     aspect-ratio: 8 / 14;
     align-self: start;
 }
+
+@media (max-height: 800px) {
+    .symbols-selector-grid {
+        grid-template-columns: repeat(14, 1fr);
+        grid-template-rows: repeat(8, calc(100% / 8));
+        aspect-ratio: 14 / 8;
+        align-self: start;
+    }
+}

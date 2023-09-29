@@ -1,3 +1,4 @@
 .palette-colors-selector {
     aspect-ratio: 1 / 9;
+    max-width: calc(50% - calc(var(--size-sm) / 2));
 }

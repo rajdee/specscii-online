@@ -2,13 +2,12 @@
     width: 100%;
     aspect-ratio: 1;
     box-sizing: border-box;
-    font-family: Roboto, sans-serif;
-    font-size: 10px;
     color: rgba(0, 0, 0, 0.54);
     text-transform: uppercase;
+    cursor: pointer;
 }
 
 .palette-color-selected {
-    outline: 1px solid #C6CFD9;
+    outline: 1px solid #6F7173;
     outline-offset: -2px;
 }
