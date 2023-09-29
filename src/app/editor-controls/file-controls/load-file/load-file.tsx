@@ -1,7 +1,8 @@
 import {useContext, useRef} from 'react';
 import {editorContext} from '@/app/models/editor-context';
 import {jsonExporter} from '@/app/services/json-export';
-import {Button, styled} from '@mui/material';
+import Button from '@mui/material/Button';
+import {styled} from '@mui/material/';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import {localStorageService} from '@/app/services/local-storage-service';
 import {imageContext} from '@/app/models/image-context';

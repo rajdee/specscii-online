@@ -4,7 +4,8 @@ import styles from './colors-selector.module.css';
 import {useContext} from 'react';
 import {editorContext} from '@/app/models/editor-context';
 import {ZxPalette} from '@/app/models/zx-palette';
-import {Button, Stack} from '@mui/material';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
 
 export default function ColorsSelector() {
     const palette: ZxPalette = paletteProvider.getPalette();
@@ -18,9 +19,9 @@ export default function ColorsSelector() {
     return <Stack className={styles['colors-selector']} gap={2}>
         <Button variant="outlined" onClick={swap}>Swap</Button>
         <div className={styles.palettes}>
-            <PaletteColorsSelector colors={colors} currentColor={ink} changeColor={setInk}></PaletteColorsSelector>
+            <PaletteColorsSelector colors={colors} currentColor={ink} changeColor={setInk}>Ink</PaletteColorsSelector>
             <PaletteColorsSelector colors={colors} currentColor={paper}
-                                   changeColor={setPaper}></PaletteColorsSelector>
+                                   changeColor={setPaper}>Paper</PaletteColorsSelector>
         </div>
     </Stack>;
 }

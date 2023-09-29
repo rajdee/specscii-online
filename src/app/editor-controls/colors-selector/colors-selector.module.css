@@ -1,5 +1,10 @@
 .colors-selector {
     flex-basis: 20%;
+    font-family: Roboto, sans-serif;
+    font-size: 9px;
+    text-align: center;
+    color: rgba(0, 0, 0, 0.54);
+    text-transform: uppercase;
 }
 
 .palettes {

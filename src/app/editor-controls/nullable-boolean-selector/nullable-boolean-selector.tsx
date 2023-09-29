@@ -1,6 +1,7 @@
 import {ReactNode} from 'react';
 import styles from './nullable-boolean-selector.module.css';
-import {ToggleButton, ToggleButtonGroup} from '@mui/material';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 interface NullableBooleanSelectorProps {
     setting: boolean | null,

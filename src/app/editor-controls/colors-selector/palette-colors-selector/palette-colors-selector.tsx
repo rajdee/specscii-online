@@ -2,14 +2,16 @@ import {PaletteColor} from './palette-color/palette-color';
 import styles from './palette-colors-selector.module.css';
 import {ZxColorNames} from '@/app/models/zx-color-names';
 import {ZxColors} from '@/app/models/zx-colors';
+import {ReactNode} from 'react';
 
 type PaletteColorsSelectorProps = {
     colors: ZxColors,
+    children: ReactNode,
     currentColor: ZxColorNames | null,
     changeColor: (arg0: ZxColorNames | null) => void
 }
 
-export default function PaletteColorsSelector({colors, currentColor, changeColor}: PaletteColorsSelectorProps) {
+export default function PaletteColorsSelector({colors, children, currentColor, changeColor}: PaletteColorsSelectorProps) {
     const selectors = [] as React.ReactNode[];
     if (colors) {
         for (const name of Object.keys(colors) as ZxColorNames[]) {
@@ -19,5 +21,8 @@ export default function PaletteColorsSelector({colors, currentColor, changeColor
         selectors.push(<PaletteColor selected={null === currentColor} changeColor={changeColor}
                                      key={'transparent'} name={null} color={colors[ZxColorNames.WHITE]}></PaletteColor>);
     }
-    return <div className={styles['palette-colors-selector']}>{selectors}</div>;
+    return <div className={styles['palette-colors-selector']}>
+        {children}
+        {selectors}
+    </div>;
 }

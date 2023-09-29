@@ -1,8 +1,14 @@
 .palette-color {
+    width: 100%;
     aspect-ratio: 1;
     box-sizing: border-box;
+    font-family: Roboto, sans-serif;
+    font-size: 10px;
+    color: rgba(0, 0, 0, 0.54);
+    text-transform: uppercase;
 }
 
 .palette-color-selected {
-    outline: 1px solid black;
+    outline: 1px solid #C6CFD9;
+    outline-offset: -1px;
 }

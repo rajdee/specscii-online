@@ -1,7 +1,8 @@
 import {useContext} from 'react';
 import {undoHistoryContext} from '@/app/models/undo-context';
 import {editorContext} from '@/app/models/editor-context';
-import {Button, ButtonGroup} from '@mui/material';
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
 import UndoIcon from '@mui/icons-material/Undo';
 import RedoIcon from '@mui/icons-material/Redo';
 import {localStorageService} from '@/app/services/local-storage-service';

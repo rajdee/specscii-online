@@ -12,7 +12,7 @@ import {SymbolsMode} from '@/app/models/symbols-mode';
 import {cleanFieldsMapProvider} from '@/app/services/clean-fields-map-provider';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import {useMediaQuery} from '@mui/material';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';

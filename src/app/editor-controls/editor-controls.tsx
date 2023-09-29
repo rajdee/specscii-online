@@ -5,9 +5,8 @@ import {NullableBooleanSelector} from '@/app/editor-controls/nullable-boolean-se
 import {useContext} from 'react';
 import {editorContext} from '@/app/models/editor-context';
 import {FileControls} from '@/app/editor-controls/file-controls/file-controls';
-import {CheckboxSelector} from '@/app/editor-controls/checkbox-selector/checkbox-selector';
 import {HistoryControls} from '@/app/editor-controls/history-controls/history-controls';
-import {Paper, Stack} from '@mui/material';
+import Stack from '@mui/material/Stack';
 import FlashOnIcon from '@mui/icons-material/FlashOn';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import GridOnIcon from '@mui/icons-material/GridOn';

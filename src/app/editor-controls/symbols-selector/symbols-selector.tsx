@@ -4,7 +4,8 @@ import {symbolsProvider} from '@/app/services/symbols-provider';
 import {SymbolSelector} from '@/app/editor-controls/symbols-selector/symbol-selector/symbol-selector';
 import styles from './symbols-selector.module.css';
 import {SymbolsModeSelector} from '@/app/editor-controls/symbols-selector/symbols-mode-selector/symbols-mode-selector';
-import {Stack, Paper} from '@mui/material';
+import Stack from '@mui/material/Stack';
+import Paper from '@mui/material/Paper';
 
 export default function SymbolsSelector() {
     const {symbol, setSymbol, setSymbolsMode} = useContext(editorContext);
@@ -26,6 +27,4 @@ export default function SymbolsSelector() {
             {selectors}
         </Paper>
     </Stack>;
-
-
 }
