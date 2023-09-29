@@ -23,7 +23,7 @@ export const HistoryControls = () => {
     const redoEnabled = (undoStepNumber + 1) < undoHistory.length;
     const undoEnabled = undoStepNumber > 0;
 
-    return <ButtonGroup variant="outlined" aria-label="outlined button group">
+    return <ButtonGroup fullWidth={true} variant="outlined" aria-label="outlined button group">
         <Button startIcon={<UndoIcon fontSize="small"/>} disabled={!undoEnabled} onClick={undo}>Undo</Button>
         <Button startIcon={<RedoIcon fontSize="small"/>} disabled={!redoEnabled} onClick={redo}>Redo</Button>
     </ButtonGroup>;

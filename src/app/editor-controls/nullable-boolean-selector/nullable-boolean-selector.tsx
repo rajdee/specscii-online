@@ -58,6 +58,7 @@ export const NullableBooleanSelector = ({
         onChange={handleChange}
         aria-label="Mode"
         size={'small'}
+        fullWidth={true}
     >
         <ToggleButton value="on">{optionIcon}{children} {internalLabels[0]}</ToggleButton>
         <ToggleButton value="off">{internalLabels[1]}</ToggleButton>

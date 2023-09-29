@@ -116,9 +116,6 @@ export const CanvasChunk = ({canvasInk, canvasPaper, canvasBright, canvasFlash, 
     };
 
     const onMouseEnter = (event: React.PointerEvent<HTMLCanvasElement>) => {
-        if (symbolsMode === 'blocks') {
-            detectCanvasPosition(event);
-        }
         setPreview(true);
     };
     const onMouseLeave = () => {
@@ -126,8 +123,6 @@ export const CanvasChunk = ({canvasInk, canvasPaper, canvasBright, canvasFlash, 
     };
 
     const detectCanvasPosition = (event: React.MouseEvent<HTMLCanvasElement>) => {
-
-
         let position = null;
 
         if (canvasRef && canvasRef.current) {
@@ -150,7 +145,6 @@ export const CanvasChunk = ({canvasInk, canvasPaper, canvasBright, canvasFlash, 
             }
         }
         setCanvasPosition(position);
-        // console.log('detect', position);
         return position;
     };
 
