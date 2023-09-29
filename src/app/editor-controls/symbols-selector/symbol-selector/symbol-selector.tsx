@@ -4,6 +4,7 @@ import {paletteProvider} from '@/app/services/palette-provider';
 import styles from './symbol-selector.module.css';
 import {ZxColorNames} from '@/app/models/zx-color-names';
 import {ZxColorTypes} from '@/app/models/zx-color-types';
+import {ButtonBase} from '@mui/material';
 
 interface SymbolSelectorProps {
     symbolNumber: number,
@@ -14,7 +15,7 @@ interface SymbolSelectorProps {
 const width = 8;
 const height = 8;
 export const SymbolSelector = ({symbolNumber, selected, changeSymbol}: SymbolSelectorProps) => {
-    const className = selected?`${styles['symbol-selector']} ${styles['symbol-selector-selected']}`:`${styles['symbol-selector']} `;
+    const className = selected ? `${styles['symbol-selector']} ${styles['symbol-selector-selected']}` : `${styles['symbol-selector']} `;
     const canvasRef = useRef(null);
     useLayoutEffect(() => {
         const symbol = symbolsProvider.getSymbol(symbolNumber);
@@ -56,11 +57,13 @@ export const SymbolSelector = ({symbolNumber, selected, changeSymbol}: SymbolSel
             changeSymbol(symbolNumber);
         }
     };
-    return <canvas
-        onPointerMove={pointerMove}
-        onClick={click}
-        ref={canvasRef}
-        className={className}
-        width={width}
-        height={height}></canvas>;
+    return <ButtonBase className={className}>
+        <canvas
+            className={styles.canvas}
+            onPointerMove={pointerMove}
+            onClick={click}
+            ref={canvasRef}
+            width={width}
+            height={height}></canvas>
+    </ButtonBase>;
 };

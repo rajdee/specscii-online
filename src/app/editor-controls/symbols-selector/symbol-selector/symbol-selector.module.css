@@ -2,9 +2,16 @@
     height: 100%;
     aspect-ratio: 1;
     image-rendering: pixelated;
-    outline: 1px solid #ccc;
+    outline: 1px solid #C6CFD9;
+    padding: 2px;
+}
+
+.canvas {
+    width: 100%;
+    height: 100%;
 }
 
 .symbol-selector-selected {
-    outline: 1px solid orangered;
+    outline: 2px solid rgb(25, 118, 210);
+    outline-offset: -2px;
 }

@@ -19,6 +19,8 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import {localStorageService} from '@/app/services/local-storage-service';
 import {imageContext} from '@/app/models/image-context';
+import {undoHistoryService} from '@/app/services/undo-history-service';
+import useEventListener from '@use-it/event-listener';
 
 export default function Editor() {
     const [author, setAuthor] = useState<string>('');
@@ -64,6 +66,16 @@ export default function Editor() {
         }
     }, []);
 
+    const keyHandler = (event: KeyboardEvent) => {
+        if (event.key === 'z' && event.ctrlKey){
+            undoHistoryService.undo(fieldsMap, setFieldsMap, undoStepNumber, setUndoStepNumber, undoHistory, setUndoHistory);
+        }
+        else if (event.key === 'y' && event.ctrlKey){
+            undoHistoryService.redo(fieldsMap, setFieldsMap, undoStepNumber, setUndoStepNumber, undoHistory, setUndoHistory);
+        }
+    };
+
+    useEventListener('keydown', keyHandler);
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline/>
