@@ -34,4 +34,5 @@ const defaultValue: EditorContextValue = {
     setFieldsMap: ([]: Array<CanvasField>) => {
     },
 };
+
 export const editorContext = createContext<EditorContextValue>(defaultValue);
