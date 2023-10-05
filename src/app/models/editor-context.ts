@@ -1,26 +1,13 @@
-import {createContext} from 'react';
-import {CanvasField} from '@/app/models/canvas-field';
-import {ZxColorNames} from '@/app/models/zx-color-names';
-import {SymbolsMode} from '@/app/models/symbols-mode';
+import { createContext } from 'react';
+import { CanvasField } from '@/app/models/canvas-field';
+import { SymbolsMode } from '@/app/models/symbols-mode';
+import { ZxColorNames } from '@/app/models/zx-color-names';
+import { EditorActions, EditorState } from './editor-state';
 
-export type EditorContextValue = {
-    symbolsMode: SymbolsMode,
-    setSymbolsMode: (symbolsMode: SymbolsMode) => void,
-    symbol: number,
-    setSymbol: (symbol: number) => void,
-    grid: boolean | null,
-    setGrid: (grid: boolean | null) => void,
-    ink: ZxColorNames | null,
-    setInk: (ink: ZxColorNames | null) => void,
-    paper: ZxColorNames | null,
-    setPaper: (paper: ZxColorNames | null) => void,
-    bright: boolean | null,
-    setBright: (bright: boolean | null) => void,
-    flash: boolean | null,
-    setFlash: (flash: boolean | null) => void,
-    fieldsMap: Array<CanvasField>,
-    setFieldsMap: (fieldsMap: Array<CanvasField>) => void,
-}
+
+export type EditorContextValue = EditorState | EditorActions;
+
+
 const defaultValue: EditorContextValue = {
     symbolsMode: 'symbols',
     setSymbolsMode: (symbolsMode: SymbolsMode) => {
