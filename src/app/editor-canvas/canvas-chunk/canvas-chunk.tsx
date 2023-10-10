@@ -71,8 +71,8 @@ export const CanvasChunk = ({
     const canvasClassname = clsx(
         styles['canvas-chunk'],
         {
-            [styles['grid']]: grid === true,
-            [styles['grid-dashed']]: grid === false
+            [styles['grid']]: grid,
+            [styles['grid-dashed']]: !grid
         }
     );
 

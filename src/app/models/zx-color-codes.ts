@@ -11,13 +11,13 @@ export const ZxColorCodes: { [key in ZxColorNames]: number } = {
     white: 7,
 };
 
-export const ZxColorIds = {
-    0: 'black',
-    1: 'blue',
-    2: 'red',
-    3: 'magenta',
-    4: 'green',
-    5: 'cyan',
-    6: 'yellow',
-    7: 'white',
+export const ZxColorIds: { [key: number]: ZxColorNames } = {
+    0: ZxColorNames.BLACK,
+    1: ZxColorNames.BLUE,
+    2: ZxColorNames.RED,
+    3: ZxColorNames.MAGENTA,
+    4: ZxColorNames.GREEN,
+    5: ZxColorNames.CYAN,
+    6: ZxColorNames.YELLOW,
+    7: ZxColorNames.WHITE,
 };

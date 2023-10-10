@@ -1,15 +1,13 @@
-import { createContext } from 'react';
-import { CanvasField } from '@/app/models/canvas-field';
-import { SymbolsMode } from '@/app/models/symbols-mode';
-import { ZxColorNames } from '@/app/models/zx-color-names';
-import { EditorActions, EditorState } from './editor-state';
+import {createContext} from 'react';
+import {CanvasField} from '@/app/models/canvas-field';
+import {SymbolsMode} from '@/app/models/symbols-mode';
+import {ZxColorNames} from '@/app/models/zx-color-names';
+import {EditorActions, EditorState} from './editor-state';
 
-
-export type EditorContextValue = EditorState | EditorActions;
-
+export type EditorContextValue = EditorState & EditorActions;
 
 const defaultValue: EditorContextValue = {
-    symbolsMode: 'symbols',
+    symbolsMode: SymbolsMode.SYMBOLS,
     setSymbolsMode: (symbolsMode: SymbolsMode) => {
     },
     symbol: 0,

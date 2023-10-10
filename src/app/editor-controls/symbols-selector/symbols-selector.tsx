@@ -6,6 +6,7 @@ import styles from './symbols-selector.module.css';
 import {SymbolsModeSelector} from '@/app/editor-controls/symbols-selector/symbols-mode-selector/symbols-mode-selector';
 import Stack from '@mui/material/Stack';
 import Paper from '@mui/material/Paper';
+import {SymbolsMode} from '@/app/models/symbols-mode';
 
 export default function SymbolsSelector() {
     const {symbol, setSymbol, setSymbolsMode} = useContext(editorContext);
@@ -13,7 +14,7 @@ export default function SymbolsSelector() {
     const symbols = symbolsProvider.getFont();
     const changeSymbol = (symbolNumber: number) => {
         setSymbol(symbolNumber);
-        setSymbolsMode('symbols');
+        setSymbolsMode(SymbolsMode.SYMBOLS);
     };
     if (symbols) {
         for (const number of Object.keys(symbols)) {

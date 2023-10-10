@@ -1,9 +1,8 @@
 'use client';
 import {useEffect, useMemo, useState} from 'react';
 
-import { useUndo } from '@/app/hooks/useUndo';
-import useEventListener from '@use-it/event-listener';
-import { useExitDetection } from '@/app/hooks/useExitDetection';
+import {useUndo} from '@/app/hooks/useUndo';
+import {useExitDetection} from '@/app/hooks/useExitDetection';
 
 import EditorCanvas from '@/app/editor-canvas/editor-canvas';
 import EditorControls from '@/app/editor-controls/editor-controls';
@@ -12,7 +11,7 @@ import {SymbolsMode} from '@/app/models/symbols-mode';
 import {imageContext} from '@/app/models/image-context';
 import {ZxColorNames} from '@/app/models/zx-color-names';
 import {editorContext} from '@/app/models/editor-context';
-import { undoHistoryContext} from '@/app/models/undo-context';
+import {undoHistoryContext} from '@/app/models/undo-context';
 
 import {cleanFieldsMapProvider} from '@/app/services/clean-fields-map-provider';
 
@@ -28,11 +27,10 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
 
-
 export default function Editor() {
     const [author, setAuthor] = useState<string>('');
     const [imageName, setImageName] = useState<string>('');
-    const [symbolsMode, setSymbolsMode] = useState<SymbolsMode>('symbols');
+    const [symbolsMode, setSymbolsMode] = useState<SymbolsMode>(SymbolsMode.SYMBOLS);
     const [symbol, setSymbol] = useState<number>(32);
     const [grid, setGrid] = useState<boolean | null>(false);
     const [ink, setInk] = useState<ZxColorNames | null>(ZxColorNames.BLACK);
@@ -46,10 +44,10 @@ export default function Editor() {
         undoHistory,
         undoStepNumber,
         setUndoHistory,
-        setUndoStepNumber
+        setUndoStepNumber,
     } = useUndo({
         fieldsMap,
-        setFieldsMap
+        setFieldsMap,
     });
 
 
@@ -68,7 +66,26 @@ export default function Editor() {
     );
 
     useExitDetection();
-    
+
+    useEffect(() => {
+        console.log(
+            'RELEASE BY \n' +
+            '\n' +
+            '▓█████▄  ██▓ ▄▄▄▄    ██▓ ██▓     ██▓ ██ ▄█▀ ██▓\n' +
+            '▒██▀ ██▌▓██▒▓█████▄ ▓██▒▓██▒    ▓██▒ ██▄█▒ ▓██▒\n' +
+            '░██   █▌▒██▒▒██▒ ▄██▒██▒▒██░    ▒██▒▓███▄░ ▒██▒\n' +
+            '░▓█▄   ▌░██░▒██░█▀  ░██░▒██░    ░██░▓██ █▄ ░██░\n' +
+            '░▒████▓ ░██░░▓█  ▀█▓░██░░██████▒░██░▒██▒ █▄░██░\n' +
+            ' ▒▒▓  ▒ ░▓  ░▒▓███▀▒░▓  ░ ▒░▓  ░░▓  ▒ ▒▒ ▓▒░▓  \n' +
+            ' ░ ▒  ▒  ▒ ░▒░▒   ░  ▒ ░░ ░ ▒  ░ ▒ ░░ ░▒ ▒░ ▒ ░\n' +
+            ' ░ ░  ░  ▒ ░ ░    ░  ▒ ░  ░ ░    ▒ ░░ ░░ ░  ▒ ░\n' +
+            '   ░     ░   ░       ░      ░  ░ ░  ░  ░    ░  \n' +
+            ' ░                ░                            \n' +
+            '\n'
+        )
+    }, []);
+
+
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline/>

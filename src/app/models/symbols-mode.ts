@@ -1,1 +1,5 @@
-export type SymbolsMode = 'blocks' | 'ignore' | 'symbols';
+export enum SymbolsMode {
+    BLOCKS = 'blocks',
+    IGNORE = 'ignore',
+    SYMBOLS = 'symbols'
+}
