@@ -2,20 +2,21 @@ import {useContext} from 'react';
 import {editorContext} from '@/app/models/editor-context';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import {SymbolsMode} from '@/app/models/symbols-mode';
 
 export const SymbolsModeSelector = () => {
     const {symbolsMode, setSymbolsMode} = useContext(editorContext);
     const handleChange = (event: React.MouseEvent<HTMLElement>, newMode: string) => {
         switch (newMode) {
-            case 'symbols':
-                setSymbolsMode('symbols');
+            case SymbolsMode.SYMBOLS:
+                setSymbolsMode(SymbolsMode.SYMBOLS);
                 break;
-            case 'blocks':
-                setSymbolsMode('blocks');
+            case SymbolsMode.BLOCKS:
+                setSymbolsMode(SymbolsMode.BLOCKS);
                 break;
-            case 'ignore':
+            case SymbolsMode.IGNORE:
             default:
-                setSymbolsMode('ignore');
+                setSymbolsMode(SymbolsMode.IGNORE);
                 break;
         }
     };
