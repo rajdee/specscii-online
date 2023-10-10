@@ -25,6 +25,8 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
+import {localStorageService} from '@/app/services/local-storage-service';
+import {CanvasField} from '@/app/models/canvas-field';
 
 
 export default function Editor() {
@@ -68,21 +70,39 @@ export default function Editor() {
     useExitDetection();
 
     useEffect(() => {
-        console.log(
-            'RELEASE BY \n' +
-            '\n' +
-            '▓█████▄  ██▓ ▄▄▄▄    ██▓ ██▓     ██▓ ██ ▄█▀ ██▓\n' +
-            '▒██▀ ██▌▓██▒▓█████▄ ▓██▒▓██▒    ▓██▒ ██▄█▒ ▓██▒\n' +
-            '░██   █▌▒██▒▒██▒ ▄██▒██▒▒██░    ▒██▒▓███▄░ ▒██▒\n' +
-            '░▓█▄   ▌░██░▒██░█▀  ░██░▒██░    ░██░▓██ █▄ ░██░\n' +
-            '░▒████▓ ░██░░▓█  ▀█▓░██░░██████▒░██░▒██▒ █▄░██░\n' +
-            ' ▒▒▓  ▒ ░▓  ░▒▓███▀▒░▓  ░ ▒░▓  ░░▓  ▒ ▒▒ ▓▒░▓  \n' +
-            ' ░ ▒  ▒  ▒ ░▒░▒   ░  ▒ ░░ ░ ▒  ░ ▒ ░░ ░▒ ▒░ ▒ ░\n' +
-            ' ░ ░  ░  ▒ ░ ░    ░  ▒ ░  ░ ░    ▒ ░░ ░░ ░  ▒ ░\n' +
-            '   ░     ░   ░       ░      ░  ░ ░  ░  ░    ░  \n' +
-            ' ░                ░                            \n' +
-            '\n'
-        )
+        const env = process.env.NODE_ENV;
+
+        if (env === 'production') {
+            console.log(
+                'RELEASE BY \n' +
+                '\n' +
+                '▓█████▄  ██▓ ▄▄▄▄    ██▓ ██▓     ██▓ ██ ▄█▀ ██▓\n' +
+                '▒██▀ ██▌▓██▒▓█████▄ ▓██▒▓██▒    ▓██▒ ██▄█▒ ▓██▒\n' +
+                '░██   █▌▒██▒▒██▒ ▄██▒██▒▒██░    ▒██▒▓███▄░ ▒██▒\n' +
+                '░▓█▄   ▌░██░▒██░█▀  ░██░▒██░    ░██░▓██ █▄ ░██░\n' +
+                '░▒████▓ ░██░░▓█  ▀█▓░██░░██████▒░██░▒██▒ █▄░██░\n' +
+                ' ▒▒▓  ▒ ░▓  ░▒▓███▀▒░▓  ░ ▒░▓  ░░▓  ▒ ▒▒ ▓▒░▓  \n' +
+                ' ░ ▒  ▒  ▒ ░▒░▒   ░  ▒ ░░ ░ ▒  ░ ▒ ░░ ░▒ ▒░ ▒ ░\n' +
+                ' ░ ░  ░  ▒ ░ ░    ░  ▒ ░  ░ ░    ▒ ░░ ░░ ░  ▒ ░\n' +
+                '   ░     ░   ░       ░      ░  ░ ░  ░  ░    ░  \n' +
+                ' ░                ░                            \n' +
+                '\n',
+            );
+        }
+
+        const fieldsMap = localStorageService.getItem('fieldsMap');
+        if (fieldsMap) {
+            setFieldsMap(fieldsMap as CanvasField[]);
+        }
+        const author = localStorageService.getItem('author');
+        if (author) {
+            setAuthor(author);
+        }
+        const imageName = localStorageService.getItem('imageName');
+        if (imageName) {
+            setImageName(imageName);
+        }
+
     }, []);
 
 
