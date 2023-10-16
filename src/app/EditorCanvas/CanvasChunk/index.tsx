@@ -15,6 +15,7 @@ interface Props {
     canvasFlash: boolean,
     fieldNumber: number,
     canvasSymbol: number
+    isSelected: boolean
 }
 
 export const enum CanvasPosition {
@@ -33,7 +34,8 @@ export const CanvasChunk = ({
     canvasBright,
     canvasFlash,
     fieldNumber,
-    canvasSymbol
+    canvasSymbol,
+    isSelected
 }: Props) => {
 
     const {
@@ -64,6 +66,7 @@ export const CanvasChunk = ({
         canvasBright,
         canvasSymbol,
         canvasPosition,
+        isSelected,
         setPreview,
         setCanvasPosition
     });

@@ -1,16 +1,17 @@
 import React, {useContext, useLayoutEffect} from 'react';
 
 import {editorContext} from '@/app/models/editor-context';
+import {ZxColorNames} from '@/app/models/zx-color-names';
 import {flashSwapContext} from '@/app/models/flash-swap-context';
 
-import {CanvasPosition} from '.';
+import {CanvasPosition} from './';
 
 import {imageDataCache} from '@/app/services/image-data-cache';
 import {localStorageService} from '@/app/services/local-storage-service';
 
 import {getSymbolBlock} from './getSymbolBlock';
 import {changeSymbolToBlock} from './changeSymbolToBlock';
-import {ZxColorNames} from '@/app/models/zx-color-names';
+import { getColor } from './getColor';
 
 
 interface UseCanvasActionsProps {
@@ -24,6 +25,7 @@ interface UseCanvasActionsProps {
     fieldNumber: number,
     canvasBright: boolean,
     canvasSymbol: number,
+    isSelected: boolean,
     canvasPosition: CanvasPosition | null,
     setPreview: (preview: boolean) => void,
     setCanvasPosition: (canvasPosition: CanvasPosition | null) => void
@@ -42,6 +44,7 @@ export const useCanvasActions = ({
                                      canvasBright,
                                      canvasSymbol,
                                      canvasPosition,
+                                     isSelected,
                                      setPreview,
                                      setCanvasPosition,
                                  }: UseCanvasActionsProps) => {
@@ -177,8 +180,21 @@ export const useCanvasActions = ({
 
 
     useLayoutEffect(() => {
-        const newInk = preview ? (ink || canvasInk) : canvasInk;
-        const newPaper = preview ? (paper || canvasPaper) : canvasPaper;
+        const newInk = getColor({
+            type: 'ink',
+            color: ink,
+            canvasColor: canvasInk,
+            isPreview: preview,
+            isSelected
+        })
+        const newPaper = getColor({
+            type: 'paper',
+            color: paper,
+            canvasColor: canvasPaper,
+            isPreview: preview,
+            isSelected
+        })
+
         let newSymbol;
 
         if (isBlocksMode) {
@@ -206,7 +222,23 @@ export const useCanvasActions = ({
                 context.putImageData(imageData, 0, 0);
             }
         }
-    }, [canvasInk, canvasPaper, canvasBright, canvasFlash, canvasSymbol, isUpdateRequired, preview, canvasPosition]);
+    }, [
+        ink,
+        paper,
+        bright,
+        flash,
+        canvasRef,
+        canvasFlash,
+        canvasInk,
+        canvasPaper,
+        canvasBright,
+        canvasFlash,
+        canvasSymbol,
+        isUpdateRequired,
+        preview,
+        isSelected,
+        canvasPosition
+    ]);
 
     return {
         onClick,

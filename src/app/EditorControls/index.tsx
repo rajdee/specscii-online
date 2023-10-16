@@ -5,6 +5,7 @@ import Stack from '@mui/material/Stack';
 import GridOnIcon from '@mui/icons-material/GridOn';
 import FlashOnIcon from '@mui/icons-material/FlashOn';
 import LightModeIcon from '@mui/icons-material/LightMode';
+import HighlightAltIcon from '@mui/icons-material/HighlightAlt';
 
 import {editorContext} from '@/app/models/editor-context';
 
@@ -31,6 +32,7 @@ export default function EditorControls() {
             <Stack className={styles.top} spacing={2} direction="row">
                 <ColorsSelector />
                 <Stack spacing={2}>
+                    <HighlightAltIcon />
                     <NullableBooleanSelector
                         setting={bright}
                         optionIcon={<LightModeIcon fontSize="small" sx={{mr: 1}}/>}

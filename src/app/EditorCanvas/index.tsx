@@ -34,6 +34,7 @@ export default function EditorCanvas() {
                                 canvasFlash={field.flash}
                                 fieldNumber={index}
                                 canvasSymbol={field.symbol}
+                                isSelected={true}
                             />
                         ))
                     }
