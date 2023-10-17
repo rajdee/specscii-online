@@ -1,4 +1,4 @@
-import {useContext, useState} from 'react';
+import {useState} from 'react';
 import sanitize from 'sanitize-filename';
 
 import Stack from '@mui/material/Stack';
@@ -9,11 +9,14 @@ import SaveIcon from '@mui/icons-material/Save';
 import DialogContent from '@mui/material/DialogContent';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 
-import {imageContext} from '@/app/models/image-context';
-import {editorContext} from '@/app/models/editor-context';
-import {undoHistoryContext} from '@/app/models/undo-context';
 
 import {LoadFile} from '@/app/EditorControls/FileControls/LoadFile';
+
+import { useUndo } from '@/app/hooks/useUndo';
+import { useEditor } from '@/app/hooks/useEditor';
+import { useSettings } from '@/app/hooks/useSettings';
+import { useFieldsMap } from '@/app/hooks/useFieldsMap';
+
 
 
 import {jsonExporter} from '@/app/services/json-export';
@@ -28,14 +31,41 @@ import styles from './file-controls.module.css';
 
 
 export const FileControls = () => {
-
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    const {author, setAuthor, imageName, setImageName} = useContext(imageContext);
-    const {fieldsMap, setFieldsMap, ink, paper, bright, flash, symbol} = useContext(editorContext);
-    const {undoStepNumber, setUndoStepNumber, undoHistory, setUndoHistory} = useContext(undoHistoryContext);
+    const {
+        author,
+        imageName,
+        setAuthor,
+        setImageName
+    } = useSettings();
+
+    const {
+        fieldsMap,
+        setFieldsMap
+    } = useFieldsMap();
+
+    const {
+        editorState: {
+            ink,
+            paper,
+            bright,
+            flash,
+            symbol
+        }
+        } = useEditor();
+
+    const {
+        undoHistory,
+        undoStepNumber,
+        setUndoHistory,
+        setUndoStepNumber,
+    } = useUndo({
+        fieldsMap,
+        setFieldsMap
+    });
 
     const generateFileName = (extension: string) => {
         let name = author ? author + ' - ' : '';

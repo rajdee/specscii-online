@@ -1,5 +1,5 @@
 import {CanvasField} from '@/app/models/canvas-field';
-import {UndoHistory} from '@/app/models/undo-context';
+import {UndoHistory} from '@/app/models/undo-state';
 import {localStorageService} from '@/app/services/local-storage-service';
 
 class UndoHistoryService {
@@ -9,7 +9,9 @@ class UndoHistoryService {
         undoHistory: UndoHistory, setUndoHistory: (undoHistory: UndoHistory) => void,
     ) => {
         const maxSteps = 100;
-        const newUndoHistory = undoStepNumber === undoHistory.length ? undoHistory : undoHistory.slice(0, undoStepNumber);
+        const newUndoHistory = undoStepNumber === undoHistory.length
+            ? [...undoHistory]
+            : [...undoHistory.slice(0, undoStepNumber)];
         newUndoHistory.push(fieldsMap);
 
         if (newUndoHistory.length > maxSteps) {

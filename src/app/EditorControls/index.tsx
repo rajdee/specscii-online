@@ -1,13 +1,9 @@
-import {useContext} from 'react';
-
 import Stack from '@mui/material/Stack';
 
 import GridOnIcon from '@mui/icons-material/GridOn';
 import FlashOnIcon from '@mui/icons-material/FlashOn';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import HighlightAltIcon from '@mui/icons-material/HighlightAlt';
-
-import {editorContext} from '@/app/models/editor-context';
 
 import ColorsSelector from './ColorsSelector';
 import SymbolsSelector from './SymbolsSelector';
@@ -16,16 +12,21 @@ import {HistoryControls} from '@/app/EditorControls/HistoryControls';
 import {NullableBooleanSelector} from '@/app/EditorControls/NullableBooleanSelector';
 
 import styles from './editor-controls.module.css';
+import { useEditor } from '../hooks/useEditor';
 
 export default function EditorControls() {
+
     const {
-        grid,
-        flash,
-        bright,
+        editorState: {
+            bright,
+            flash,
+            grid
+        },
         setGrid,
         setFlash,
         setBright,
-    } = useContext(editorContext);
+    } = useEditor();
+
 
     return (
         <Stack className={styles.controls} spacing={4}>

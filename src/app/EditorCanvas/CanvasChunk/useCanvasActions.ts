@@ -1,17 +1,18 @@
-import React, {useContext, useLayoutEffect} from 'react';
+import React, {useLayoutEffect} from 'react';
 
-import {editorContext} from '@/app/models/editor-context';
 import {ZxColorNames} from '@/app/models/zx-color-names';
-import {flashSwapContext} from '@/app/models/flash-swap-context';
 
 import {CanvasPosition} from './';
 
 import {imageDataCache} from '@/app/services/image-data-cache';
 import {localStorageService} from '@/app/services/local-storage-service';
 
+import { getColor } from './getColor';
 import {getSymbolBlock} from './getSymbolBlock';
 import {changeSymbolToBlock} from './changeSymbolToBlock';
-import { getColor } from './getColor';
+
+import { useEditor } from '@/app/hooks/useEditor';
+import { useFieldsMap } from '@/app/hooks/useFieldsMap';
 
 
 interface UseCanvasActionsProps {
@@ -25,7 +26,8 @@ interface UseCanvasActionsProps {
     fieldNumber: number,
     canvasBright: boolean,
     canvasSymbol: number,
-    isSelected: boolean,
+    flashSwap: boolean,
+    isSelected: boolean | undefined,
     canvasPosition: CanvasPosition | null,
     setPreview: (preview: boolean) => void,
     setCanvasPosition: (canvasPosition: CanvasPosition | null) => void
@@ -33,38 +35,43 @@ interface UseCanvasActionsProps {
 
 
 export const useCanvasActions = ({
-                                     width,
-                                     height,
-                                     preview,
-                                     canvasRef,
-                                     canvasInk,
-                                     canvasFlash,
-                                     canvasPaper,
-                                     fieldNumber,
-                                     canvasBright,
-                                     canvasSymbol,
-                                     canvasPosition,
-                                     isSelected,
-                                     setPreview,
-                                     setCanvasPosition,
-                                 }: UseCanvasActionsProps) => {
+    width,
+    height,
+    preview,
+    canvasRef,
+    canvasInk,
+    canvasFlash,
+    canvasPaper,
+    fieldNumber,
+    canvasBright,
+    canvasSymbol,
+    canvasPosition,
+    flashSwap,
+    isSelected,
+    setPreview,
+    setCanvasPosition,
+    }: UseCanvasActionsProps) => {
 
     const {
-        ink,
-        paper,
-        flash,
-        symbol,
-        bright,
-        fieldsMap,
-        symbolsMode,
+        editorState: {
+            ink,
+            paper,
+            flash,
+            symbol,
+            bright,
+            symbolsMode,
+        },
         setInk,
         setPaper,
         setFlash,
         setSymbol,
         setBright,
-        setFieldsMap,
-    } = useContext(editorContext);
-    const {flashSwap} = useContext(flashSwapContext);
+    } = useEditor();
+
+    const {
+        fieldsMap,
+        setFieldsMap
+    } = useFieldsMap();
 
     const isBlocksMode = symbolsMode === 'blocks';
     const isUpdateRequired = flashSwap && (canvasFlash || preview);
