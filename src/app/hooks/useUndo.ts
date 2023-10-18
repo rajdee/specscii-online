@@ -1,4 +1,5 @@
-import useEventListener from '@use-it/event-listener';
+import { useCallback } from 'react';
+import { useHotkeys } from 'react-hotkeys-hook';
 import { useAppDispatch, useAppSelector } from './useStore';
 
 import { UndoHistory } from '@/app/models/undo-state';
@@ -7,7 +8,6 @@ import { CanvasField } from '@/app/models/canvas-field';
 
 import { undoHistoryService } from '@/app/services/undo-history-service';
 import { setUndoHistoryAction, setUndoStepNumberAction, undoSelector } from '@/app/store/Undo/undoSlice';
-import { useCallback } from 'react';
 
 
 type hookType = {
@@ -42,33 +42,54 @@ export const useUndo = ({
         ), [dispatch]
     );
 
-    const keyHandler = (event: KeyboardEvent) => {
-        if (event.key === 'z' && event.ctrlKey) {
-            undoHistoryService.undo(
+    useHotkeys(
+        'ctrl+z, ctrl+y',
+        (_, { keys = [] } = {}) => {
+            const method = keys[0] === 'z'
+                ? 'undo'
+                : 'redo';
+
+            undoHistoryService[method]({
                 fieldsMap,
                 setFieldsMap,
                 undoStepNumber,
                 setUndoStepNumber,
                 undoHistory,
                 setUndoHistory
-            );
-        } else if (event.key === 'y' && event.ctrlKey) {
-            undoHistoryService.redo(
-                fieldsMap,
-                setFieldsMap,
-                undoStepNumber,
-                setUndoStepNumber,
-                undoHistory,
-                setUndoHistory);
+            });
         }
+    );
+
+    const handleUndo = () => {
+        undoHistoryService.undo({
+            fieldsMap,
+            setFieldsMap,
+            undoStepNumber,
+            setUndoStepNumber,
+            undoHistory,
+            setUndoHistory
+        })
     };
 
-    useEventListener('keydown', keyHandler);
+    const handleRedo = () => {
+        undoHistoryService.redo({
+            fieldsMap,
+            setFieldsMap,
+            undoStepNumber,
+            setUndoStepNumber,
+            undoHistory,
+            setUndoHistory
+        })
+    };
 
     return {
         undoHistory,
         undoStepNumber,
+        isRedoDisabled: undoStepNumber + 1 === undoHistory.length,
+        isUndoDisabled: undoStepNumber === 0,
         setUndoHistory,
-        setUndoStepNumber
+        setUndoStepNumber,
+        handleUndo,
+        handleRedo
     };
 };

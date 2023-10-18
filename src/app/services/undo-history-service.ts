@@ -2,6 +2,16 @@ import {CanvasField} from '@/app/models/canvas-field';
 import {UndoHistory} from '@/app/models/undo-state';
 import {localStorageService} from '@/app/services/local-storage-service';
 
+interface UndoHistoryMethodProps {
+    fieldsMap: CanvasField[],
+    setFieldsMap: (fieldsMap: CanvasField[]) => void,
+    undoStepNumber: number,
+    setUndoStepNumber: (undoStepNumber: number) => void,
+    undoHistory: UndoHistory,
+    setUndoHistory: (undoHistory: UndoHistory) => void,
+}
+
+
 class UndoHistoryService {
     public writeHistoryStep = (
         fieldsMap: CanvasField[],
@@ -15,7 +25,8 @@ class UndoHistoryService {
         newUndoHistory.push(fieldsMap);
 
         if (newUndoHistory.length > maxSteps) {
-            newUndoHistory.shift();
+            // slice is faster than shift
+            newUndoHistory.slice(1);
             setUndoStepNumber(maxSteps);
         } else {
             setUndoStepNumber(undoStepNumber + 1);
@@ -23,11 +34,16 @@ class UndoHistoryService {
 
         setUndoHistory(newUndoHistory);
     };
-    public undo = (
-        fieldsMap: CanvasField[], setFieldsMap: (fieldsMap: CanvasField[]) => void,
-        undoStepNumber: number, setUndoStepNumber: (undoStepNumber: number) => void,
-        undoHistory: UndoHistory, setUndoHistory: (undoHistory: UndoHistory) => void,
-    ) => {
+
+    public undo = ({
+        fieldsMap,
+        setFieldsMap,
+        undoStepNumber,
+        setUndoStepNumber,
+        undoHistory,
+        setUndoHistory
+    }: UndoHistoryMethodProps) => {
+
         if (undoStepNumber > 0) {
             if (undoStepNumber === undoHistory.length) {
                 const newHistory = [...undoHistory];
@@ -42,11 +58,13 @@ class UndoHistoryService {
             setUndoStepNumber(newStep);
         }
     };
-    public redo = (
-        fieldsMap: CanvasField[], setFieldsMap: (fieldsMap: CanvasField[]) => void,
-        undoStepNumber: number, setUndoStepNumber: (undoStepNumber: number) => void,
-        undoHistory: UndoHistory, setUndoHistory: (undoHistory: UndoHistory) => void,
-    ) => {
+    public redo = ({
+        setFieldsMap,
+        undoStepNumber,
+        setUndoStepNumber,
+        undoHistory,
+    }: UndoHistoryMethodProps) => {
+
         if ((undoStepNumber + 1) < undoHistory.length) {
             const newFieldsMap = undoHistory[undoStepNumber + 1];
             setFieldsMap(newFieldsMap);

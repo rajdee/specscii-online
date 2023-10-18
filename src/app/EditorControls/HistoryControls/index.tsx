@@ -3,10 +3,6 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import UndoIcon from '@mui/icons-material/Undo';
 import RedoIcon from '@mui/icons-material/Redo';
 
-
-import {undoHistoryService} from '@/app/services/undo-history-service';
-import {localStorageService} from '@/app/services/local-storage-service';
-
 import { useUndo } from '@/app/hooks/useUndo';
 import { useFieldsMap } from '@/app/hooks/useFieldsMap';
 
@@ -19,25 +15,14 @@ export const HistoryControls = () => {
     } = useFieldsMap();
 
     const {
-        undoHistory,
-        setUndoHistory,
-        undoStepNumber,
-        setUndoStepNumber
+        isUndoDisabled,
+        isRedoDisabled,
+        handleUndo,
+        handleRedo
     } = useUndo({
         fieldsMap,
         setFieldsMap
     });
-
-    const undo = () => {
-        undoHistoryService.undo(fieldsMap, setFieldsMap, undoStepNumber, setUndoStepNumber, undoHistory, setUndoHistory)
-    };
-
-    const redo = () => {
-        undoHistoryService.redo(fieldsMap, setFieldsMap, undoStepNumber, setUndoStepNumber, undoHistory, setUndoHistory)
-    };
-
-    const redoEnabled = (undoStepNumber + 1) < undoHistory.length;
-    const undoEnabled = undoStepNumber > 0;
 
     return (
         <ButtonGroup
@@ -47,15 +32,15 @@ export const HistoryControls = () => {
         >
             <Button
                 startIcon={<UndoIcon fontSize="small"/>}
-                disabled={!undoEnabled}
-                onClick={undo}
+                disabled={isUndoDisabled}
+                onClick={handleUndo}
             >
                 Undo
             </Button>
             <Button
                 startIcon={<RedoIcon fontSize="small"/>}
-                disabled={!redoEnabled}
-                onClick={redo}
+                disabled={isRedoDisabled}
+                onClick={handleRedo}
             >
                 Redo
             </Button>
