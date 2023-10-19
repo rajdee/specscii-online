@@ -5,7 +5,7 @@ interface GetColorProps {
     color: ZxColorNames | null,
     canvasColor: ZxColorNames | null,
     isPreview: boolean,
-    isSelected: boolean
+    isSelected: boolean | undefined
 }
 
 export const getColor = ({

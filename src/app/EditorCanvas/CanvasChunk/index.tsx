@@ -8,12 +8,12 @@ import { useCanvasActions } from './useCanvasActions';
 
 import styles from './canvas-chunk.module.css';
 
-interface Props {
+interface CanvasChunkProps {
     canvasInk: ZxColorNames,
     canvasPaper: ZxColorNames,
     canvasBright: boolean,
     canvasFlash: boolean,
-    fieldNumber: number,
+    fieldIndex: number,
     canvasSymbol: number,
     flashSwap: boolean,
     isSelected?: boolean
@@ -34,11 +34,11 @@ export const CanvasChunk = ({
     canvasPaper,
     canvasBright,
     canvasFlash,
-    fieldNumber,
+    fieldIndex,
     canvasSymbol,
     flashSwap,
     isSelected
-}: Props) => {
+}: CanvasChunkProps) => {
 
     const {
         grid,
@@ -65,7 +65,7 @@ export const CanvasChunk = ({
         flashSwap,
         canvasFlash,
         canvasPaper,
-        fieldNumber,
+        fieldIndex,
         canvasBright,
         canvasSymbol,
         canvasPosition,

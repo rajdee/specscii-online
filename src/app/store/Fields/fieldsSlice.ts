@@ -1,13 +1,22 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createDraftSafeSelector, createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 import { CanvasField } from '@/app/models/canvas-field';
 
+import { cleanFieldsMapProvider } from '@/app/services/clean-fields-map-provider';
+
 import type { RootState } from '@/app/store';
 
 const initialState = {
-    fieldsMap: [] as Array<CanvasField>
+    fieldsMap: cleanFieldsMapProvider.get() as Array<CanvasField>,
+    fieldIndex: 0
 };
+
+export interface UpdateFieldProps {
+    fieldIndex: number,
+    field: CanvasField
+}
+
 
 export const fieldsSlice = createSlice({
     name: 'fields',
@@ -16,11 +25,32 @@ export const fieldsSlice = createSlice({
         updateFieldsMap: (state, action: PayloadAction<Array<CanvasField>>) => {
             state.fieldsMap = action.payload;
         },
+        updateFieldIndex: (state, action: PayloadAction<number>) => {
+            state.fieldIndex = action.payload;
+        },
+        updateField: (state, action: PayloadAction<UpdateFieldProps>) => {
+            const { field, fieldIndex } = action.payload;
+            state.fieldsMap[fieldIndex] = field;
+        },
     },
 })
 
-export const { updateFieldsMap } = fieldsSlice.actions;
+export const {
+    updateField,
+    updateFieldsMap,
+    updateFieldIndex,
+} = fieldsSlice.actions;
 
-export const fieldsMapSelector = (state: RootState) => state.fields.fieldsMap;
+export const fieldsSelector = (state: RootState) => state.fields;
+
+export const fieldsMapSelector = createDraftSafeSelector(
+    fieldsSelector,
+    fields => fields.fieldsMap
+);
+
+export const fieldIndexSelector = createDraftSafeSelector(
+    fieldsSelector,
+    fields => fields.fieldIndex
+);
 
 export default fieldsSlice.reducer;

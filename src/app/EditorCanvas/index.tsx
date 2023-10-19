@@ -9,7 +9,6 @@ export default function EditorCanvas() {
     const {
         fieldsMap,
         flashSwap,
-        startCapturing,
         endCapturing,
     } = useEditorCanvas();
 
@@ -18,7 +17,6 @@ export default function EditorCanvas() {
             <div
                 className={styles['editor-canvas-elements']}
                 onPointerUp={endCapturing}
-                onPointerDown={startCapturing}
                 onPointerCancel={endCapturing}
             >
                 {
@@ -29,7 +27,7 @@ export default function EditorCanvas() {
                             canvasPaper={field.paper}
                             canvasBright={field.bright}
                             canvasFlash={field.flash}
-                            fieldNumber={index}
+                            fieldIndex={index}
                             flashSwap={flashSwap}
                             canvasSymbol={field.symbol}
                         />

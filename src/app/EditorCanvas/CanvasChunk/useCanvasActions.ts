@@ -23,7 +23,7 @@ interface UseCanvasActionsProps {
     canvasInk: ZxColorNames,
     canvasFlash: boolean,
     canvasPaper: ZxColorNames,
-    fieldNumber: number,
+    fieldIndex: number,
     canvasBright: boolean,
     canvasSymbol: number,
     flashSwap: boolean,
@@ -42,7 +42,7 @@ export const useCanvasActions = ({
     canvasInk,
     canvasFlash,
     canvasPaper,
-    fieldNumber,
+    fieldIndex,
     canvasBright,
     canvasSymbol,
     canvasPosition,
@@ -61,16 +61,13 @@ export const useCanvasActions = ({
             bright,
             symbolsMode,
         },
-        setInk,
-        setPaper,
-        setFlash,
-        setSymbol,
-        setBright,
+        updateEditor
     } = useEditor();
 
     const {
         fieldsMap,
-        setFieldsMap
+        updateField,
+        setFieldIndex
     } = useFieldsMap();
 
     const isBlocksMode = symbolsMode === 'blocks';
@@ -78,7 +75,7 @@ export const useCanvasActions = ({
 
 
     const changeField = (quickCanvasPosition: CanvasPosition | null = null, reset = false) => {
-        const canvasField = fieldsMap[fieldNumber];
+        const canvasField = fieldsMap[fieldIndex];
 
         if (canvasField) {
             const newInk = ink || canvasField.ink;
@@ -93,18 +90,28 @@ export const useCanvasActions = ({
             });
             const newBright = bright !== null ? bright : canvasField.bright;
             const newFlash = flash !== null ? flash : canvasField.flash;
-            const newFieldsMap = [...fieldsMap];
 
-            newFieldsMap[fieldNumber] = {
-                ...newFieldsMap[fieldNumber],
+            const updatedField = {
+                ...canvasField,
                 ink: newInk,
                 paper: newPaper,
                 symbol: newSymbol,
                 bright: newBright,
                 flash: newFlash,
             };
-            setFieldsMap(newFieldsMap);
-            localStorageService.setItem('fieldsMap', newFieldsMap);
+
+            updateField({
+                fieldIndex,
+                field: updatedField
+            });
+            setFieldIndex(fieldIndex);
+
+            const newFieldsMap = [...fieldsMap];
+            newFieldsMap[fieldIndex] = updatedField;
+            localStorageService.setItem(
+                'fieldsMap',
+                newFieldsMap
+            );
         }
     };
 
@@ -123,11 +130,13 @@ export const useCanvasActions = ({
     };
 
     const readFieldSettings = () => {
-        setInk(canvasInk);
-        setPaper(canvasPaper);
-        setSymbol(canvasSymbol);
-        setBright(canvasBright);
-        setFlash(canvasFlash);
+        updateEditor({
+            ink: canvasInk,
+            paper: canvasPaper,
+            symbol: canvasSymbol,
+            bright: canvasBright,
+            flash: canvasFlash,
+        })
     };
 
     const onPointerMove = (event: React.PointerEvent<HTMLCanvasElement>) => {
