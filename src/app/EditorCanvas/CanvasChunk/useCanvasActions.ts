@@ -4,13 +4,15 @@ import {ZxColorNames} from '@/app/models/zx-color-names';
 
 import {CanvasPosition} from './';
 
-import {imageDataCache} from '@/app/services/image-data-cache';
-import {localStorageService} from '@/app/services/local-storage-service';
+import { imageDataCache } from '@/app/services/image-data-cache';
+import { localStorageService } from '@/app/services/local-storage-service';
+import { undoHistoryService } from '@/app/services/undo-history-service';
 
 import { getColor } from './getColor';
 import {getSymbolBlock} from './getSymbolBlock';
 import {changeSymbolToBlock} from './changeSymbolToBlock';
 
+import { useUndo } from '@/app/hooks/useUndo';
 import { useEditor } from '@/app/hooks/useEditor';
 import { useFieldsMap } from '@/app/hooks/useFieldsMap';
 
@@ -67,8 +69,20 @@ export const useCanvasActions = ({
     const {
         fieldsMap,
         updateField,
-        setFieldIndex
+        setFieldIndex,
+        setFieldsMap
     } = useFieldsMap();
+
+    const {
+        undoHistory,
+        undoStepIndex,
+        setUndoHistory,
+        setUndoStepIndex,
+    } = useUndo({
+        fieldsMap,
+        fieldIndex,
+        setFieldsMap
+    });
 
     const isBlocksMode = symbolsMode === 'blocks';
     const isUpdateRequired = flashSwap && (canvasFlash || preview);
@@ -91,6 +105,7 @@ export const useCanvasActions = ({
             const newBright = bright !== null ? bright : canvasField.bright;
             const newFlash = flash !== null ? flash : canvasField.flash;
 
+
             const updatedField = {
                 ...canvasField,
                 ink: newInk,
@@ -104,6 +119,17 @@ export const useCanvasActions = ({
                 fieldIndex,
                 field: updatedField
             });
+
+            undoHistoryService.writeHistoryStep({
+                fieldIndex,
+                currentField: canvasField,
+                updatedField,
+                undoStepIndex,
+                setUndoStepIndex,
+                undoHistory,
+                setUndoHistory
+            });
+
             setFieldIndex(fieldIndex);
 
             const newFieldsMap = [...fieldsMap];

@@ -33,7 +33,7 @@ export default function EditorControls() {
             <Stack className={styles.top} spacing={2} direction="row">
                 <ColorsSelector />
                 <Stack spacing={2}>
-                    <HighlightAltIcon />
+                    {/* <HighlightAltIcon /> */}
                     <NullableBooleanSelector
                         setting={bright}
                         optionIcon={<LightModeIcon fontSize="small" sx={{mr: 1}}/>}

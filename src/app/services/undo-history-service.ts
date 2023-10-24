@@ -2,89 +2,141 @@ import {CanvasField} from '@/app/models/canvas-field';
 import {UndoHistory} from '@/app/models/undo-state';
 import {localStorageService} from '@/app/services/local-storage-service';
 
-interface UndoHistoryMethodProps {
+type UndoHistoryMethodProps = {
     fieldsMap: CanvasField[],
-    fieldIndex: number,
+    undoHistory: UndoHistory,
+    undoStepIndex: number,
     setFieldsMap: (fieldsMap: CanvasField[]) => void,
-    undoStepNumber: number,
-    setUndoStepNumber: (undoStepNumber: number) => void,
+    setUndoStepIndex: (undoStepIndex: number) => void,
+}
+
+type UpdateHistoryProps = {
+    currentStep: number;
+    fieldsMap: CanvasField[];
+    undoHistory: UndoHistory;
+    isUndo: boolean;
+    setFieldsMap: (fieldsMap: CanvasField[]) => void;
+    setUndoStepIndex: (undoStepIndex: number) => void;
+}
+
+type WriteHistoryProps = {
+    fieldIndex: number,
+    updatedField: CanvasField,
+    currentField: CanvasField,
+    undoStepIndex: number,
+    setUndoStepIndex: (undoStepIndex: number) => void,
     undoHistory: UndoHistory,
     setUndoHistory: (undoHistory: UndoHistory) => void,
 }
 
-
+const maxSteps = 100;
 class UndoHistoryService {
-    public writeHistoryStep = (
-        fieldsMap: CanvasField[],
-        fieldIndex: number,
-        undoStepNumber: number,
-        setUndoStepNumber: (undoStepNumber: number) => void,
-        undoHistory: UndoHistory,
-        setUndoHistory: (undoHistory: UndoHistory) => void,
-    ) => {
+    public writeHistoryStep = ({
+        fieldIndex,
+        updatedField,
+        currentField,
+        undoStepIndex,
+        setUndoStepIndex,
+        undoHistory,
+        setUndoHistory,
+    }: WriteHistoryProps) => {
 
-        const stepHistory = {
-            fieldIndex,
-            field: fieldsMap[fieldIndex]
-        };
-
-        const maxSteps = 100;
-        const newUndoHistory = undoStepNumber === undoHistory.length
+        const newUndoHistory = undoStepIndex <= undoHistory.length
             ? [...undoHistory]
-            : [...undoHistory.slice(0, undoStepNumber)];
+            : [...undoHistory.slice(0, undoStepIndex / 2)];
 
-        newUndoHistory.push(stepHistory);
+        newUndoHistory.push({
+            fieldIndex,
+            field: currentField,
+        });
+        newUndoHistory.push({
+            fieldIndex,
+            field: updatedField
+        });
 
-        if (newUndoHistory.length > maxSteps) {
+        if (newUndoHistory.length > maxSteps * 2) {
             // slice is faster than shift
-            newUndoHistory.slice(1);
-            setUndoStepNumber(maxSteps);
+            newUndoHistory.slice(2);
+            setUndoStepIndex(maxSteps * 2);
         } else {
-            setUndoStepNumber(undoStepNumber + 1);
+            setUndoStepIndex(undoStepIndex + 2);
         }
 
         setUndoHistory(newUndoHistory);
     };
 
+    private updateHistory = ({
+        fieldsMap,
+        currentStep,
+        undoHistory,
+        isUndo,
+        setFieldsMap,
+        setUndoStepIndex,
+    }: UpdateHistoryProps) => {
+
+        const shift = isUndo ? -1 : 1;
+        let index = currentStep + shift;
+        const isCurrentFieldIsUndo = currentStep % 2 === 0;
+
+
+        if (isCurrentFieldIsUndo && isUndo) {
+            index--;
+        }
+
+        if (!isCurrentFieldIsUndo && !isUndo) {
+            index++;
+        }
+
+        const restoredField = undoHistory[index];
+
+        const newFieldsMap = [...fieldsMap];
+        newFieldsMap[restoredField.fieldIndex] = restoredField.field;
+
+        setFieldsMap(newFieldsMap);
+        localStorageService.setItem('fieldsMap', newFieldsMap);
+
+        setUndoStepIndex(index);
+    };
+
     public undo = ({
         fieldsMap,
-        fieldIndex,
-        setFieldsMap,
-        undoStepNumber,
-        setUndoStepNumber,
         undoHistory,
-        setUndoHistory
+        undoStepIndex,
+        setFieldsMap,
+        setUndoStepIndex,
     }: UndoHistoryMethodProps) => {
 
-        if (undoStepNumber === 0) {
+        if (undoStepIndex <= 0) {
             return;
         }
 
-        if (undoStepNumber === undoHistory.length) {
-            const newHistory = [...undoHistory];
-            newHistory.push(fieldsMap);
-            setUndoHistory(newHistory);
-        }
-
-        const newStep = undoStepNumber - 1;
-        const newFieldsMap = undoHistory[newStep];
-        setFieldsMap(newFieldsMap);
-        localStorageService.setItem('fieldsMap', newFieldsMap);
-        setUndoStepNumber(newStep);
+        this.updateHistory({
+            fieldsMap,
+            undoHistory,
+            currentStep: undoStepIndex,
+            isUndo: true,
+            setFieldsMap,
+            setUndoStepIndex,
+        })
     };
 
     public redo = ({
-        setFieldsMap,
-        undoStepNumber,
-        setUndoStepNumber,
+        fieldsMap,
         undoHistory,
+        undoStepIndex,
+        setFieldsMap,
+        setUndoStepIndex,
     }: UndoHistoryMethodProps) => {
 
-        if ((undoStepNumber + 1) < undoHistory.length) {
-            const newFieldsMap = undoHistory[undoStepNumber + 1];
-            setFieldsMap(newFieldsMap);
-            localStorageService.setItem('fieldsMap', newFieldsMap);
-            setUndoStepNumber(undoStepNumber + 1);
+        if (undoStepIndex < undoHistory.length - 1) {
+            this.updateHistory({
+                fieldsMap,
+                undoHistory,
+                currentStep: undoStepIndex,
+                isUndo: false,
+                setFieldsMap,
+                setUndoStepIndex,
+            })
         }
     };
 }

@@ -1,13 +1,14 @@
 import { useCallback } from "react";
 import { useAppDispatch, useAppSelector } from "./useStore";
 
+
 import { editorStateSelector, updateEditorState } from "@/app/store/Editor/editorSlice";
 import { EditorState } from "@/app/models/editor-state";
 
 export const useEditor = () => {
 
-    const editorState = useAppSelector(editorStateSelector);
     const dispatch = useAppDispatch();
+    const editorState = useAppSelector(editorStateSelector);
 
     const updateEditor = useCallback(
         (payload: Partial<EditorState>) => dispatch(

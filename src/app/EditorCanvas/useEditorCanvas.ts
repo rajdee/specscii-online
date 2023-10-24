@@ -11,19 +11,7 @@ import { undoHistoryService } from '@/app/services/undo-history-service';
 export const useEditorCanvas = () => {
     const {
         fieldsMap,
-        fieldIndex,
-        setFieldsMap
     } = useFieldsMap();
-
-    const {
-        undoHistory,
-        undoStepNumber,
-        setUndoHistory,
-        setUndoStepNumber
-    } = useUndo({
-        fieldsMap,
-        setFieldsMap
-    });
 
     const [flashSwap, setFlashSwap] = useState<boolean>(false);
 
@@ -40,20 +28,8 @@ export const useEditorCanvas = () => {
         }, [],
     );
 
-    const endCapturing = () => {
-        undoHistoryService.writeHistoryStep(
-            fieldsMap,
-            fieldIndex,
-            undoStepNumber,
-            setUndoStepNumber,
-            undoHistory,
-            setUndoHistory
-        );
-    };
-
     return {
         fieldsMap,
         flashSwap,
-        endCapturing,
     };
 };

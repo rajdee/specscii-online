@@ -9,7 +9,7 @@ import type { RootState } from '@/app/store';
 
 const initialState = {
     fieldsMap: cleanFieldsMapProvider.get() as Array<CanvasField>,
-    fieldIndex: 0
+    fieldIndex: -1
 };
 
 export interface UpdateFieldProps {
@@ -32,10 +32,15 @@ export const fieldsSlice = createSlice({
             const { field, fieldIndex } = action.payload;
             state.fieldsMap[fieldIndex] = field;
         },
+        clearFields: state => {
+            state.fieldsMap = initialState.fieldsMap;
+            state.fieldIndex = initialState.fieldIndex;
+        }
     },
 })
 
 export const {
+    clearFields,
     updateField,
     updateFieldsMap,
     updateFieldIndex,

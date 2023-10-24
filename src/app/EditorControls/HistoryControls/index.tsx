@@ -1,3 +1,5 @@
+import { useHotkeys } from 'react-hotkeys-hook';
+
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import UndoIcon from '@mui/icons-material/Undo';
@@ -7,10 +9,11 @@ import { useUndo } from '@/app/hooks/useUndo';
 import { useFieldsMap } from '@/app/hooks/useFieldsMap';
 
 
-export const HistoryControls = () => {
 
+export const HistoryControls = () => {
     const {
         fieldsMap,
+        fieldIndex,
         setFieldsMap
     } = useFieldsMap();
 
@@ -21,8 +24,21 @@ export const HistoryControls = () => {
         handleRedo
     } = useUndo({
         fieldsMap,
+        fieldIndex,
         setFieldsMap
     });
+
+    useHotkeys(
+        'ctrl+z, ctrl+y',
+        (e, { keys = [] } = {}) => {
+                if (keys[0] === 'z') {
+                    handleUndo();
+                } else {
+                    handleRedo()
+                }
+        },
+        [ handleUndo, handleRedo ]
+    );
 
     return (
         <ButtonGroup

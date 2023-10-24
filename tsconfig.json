@@ -41,7 +41,8 @@
         "next-env.d.ts",
         "**/*.ts",
         "**/*.tsx",
-        ".next/types/**/*.ts"
+        ".next/types/**/*.ts",
+        "./vites.config.ts"
     ],
     "exclude": [
         "node_modules"

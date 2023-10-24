@@ -9,15 +9,12 @@ export default function EditorCanvas() {
     const {
         fieldsMap,
         flashSwap,
-        endCapturing,
     } = useEditorCanvas();
 
     return (
         <div className={styles['editor-canvas']}>
             <div
                 className={styles['editor-canvas-elements']}
-                onPointerUp={endCapturing}
-                onPointerCancel={endCapturing}
             >
                 {
                     fieldsMap.map((field, index) => (
