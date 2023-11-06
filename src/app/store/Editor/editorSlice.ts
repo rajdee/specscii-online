@@ -18,6 +18,8 @@ const initialState: EditorState = {
     grid: false,
     symbol: 0,
     symbolsMode: SymbolsMode.SYMBOLS,
+    isSelectedMode: false,
+    isSelected: false
 };
 
 export const editorSlice = createSlice({

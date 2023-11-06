@@ -14,4 +14,6 @@ export type EditorState = {
     paper: ZxColorNames | null;
     symbol: number;
     symbolsMode: SymbolsMode;
+    isSelectedMode: boolean;
+    isSelected: boolean;
 }
